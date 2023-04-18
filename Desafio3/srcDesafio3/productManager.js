@@ -1,6 +1,6 @@
-const fs = require("fs");
+import fs  from "fs";
 
-class ProductManager {
+ class ProductManager {
     constructor(pathName){
         this.path = pathName;
     }
@@ -50,7 +50,9 @@ class ProductManager {
             if(this.fileExists()){
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
-                console.log("allProducts: ",products);                
+                // console.log("allProducts: ",products); 
+                // console.log(content);
+                return products;               
             }
             else{
                 throw new Error("El archivo no existe")
@@ -136,51 +138,54 @@ class ProductManager {
     };
 }
 /* // Utilizar la clase */
-const manager = new ProductManager("./products.json");
+// const manager = new ProductManager("./products.json");
 
-const principalFunction =async ()=> {
-    try {
-/*         Producto Prueba agregado */
+// const principalFunction =async ()=> {
+//     try {
+// /*         Producto Prueba agregado */
 
-        // const addedProduct = await manager.addProduct({
-        //     title:"producto prueba 2",
-        //     description:"Este es un producto prueba",
-        //     price:"200",
-        //     thumbnail:"Sin imagen",
-        //     code:"abc123",
-        //     stock:"25"
-        // });
-        // console.log("addedProduct: ",addedProduct);
+//         // const addedProduct = await manager.addProduct({
+//         //     title:"producto prueba 2",
+//         //     description:"Este es un producto prueba",
+//         //     price:"200",
+//         //     thumbnail:"Sin imagen",
+//         //     code:"abc123",
+//         //     stock:"25"
+//         // });
+//         // console.log("addedProduct: ",addedProduct);
 
-/*          Producto Busqueda ID */
+// /*          Producto Busqueda ID */
 
-        // const findProductById = await manager.getProductsById(3);
-        // console.log("findProductById: ", findProductById);
+//         // const findProductById = await manager.getProductsById(3);
+//         // console.log("findProductById: ", findProductById);
 
-/*          allProducts Busqueda */
+// /*          allProducts Busqueda */
 
-        // const allProducts = await manager.getProducts();
+//         // const allProducts = await manager.getProducts();
 
-/*        Updateproducts elegir que se quiere modificar */
+// /*        Updateproducts elegir que se quiere modificar */
 
-        // const updatedProduct = await manager.updateProduct(
-        //     2, /* Cambiar ID de producto */
-        //     {
-        // //     title:"",
-        //     description:"Descripción modificada",
-        // //     price:"",
-        // //     thumbnail:"",
-        // //     code:"",
-        // //     stock:""
+//         // const updatedProduct = await manager.updateProduct(
+//         //     2, /* Cambiar ID de producto */
+//         //     {
+//         // //     title:"",
+//         //     description:"Descripción modificada",
+//         // //     price:"",
+//         // //     thumbnail:"",
+//         // //     code:"",
+//         // //     stock:""
 
-        // });
-        // console.log("updatedProduct: ", updatedProduct)
+//         // });
+//         // console.log("updatedProduct: ", updatedProduct)
 
-/*        DeleteProduct */
-        const deletedProduct = await manager.deleteProduct(3);
-        console.log("DeleteProduct: ",deletedProduct)
-    } catch (error) {
-        console.log(error.message);
-    }
-}
-principalFunction();
+// /*        DeleteProduct */
+//         const deletedProduct = await manager.deleteProduct(3);
+//         console.log("DeleteProduct: ",deletedProduct)
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+// principalFunction();
+
+export {ProductManager};
