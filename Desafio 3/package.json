@@ -1,7 +1,7 @@
 {
   "name": "desafiosbackend",
   "version": "1.0.0",
-  "main": "PruebasExpress.js",
+  "main": "./srcDesafio3/app.js",
   "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
