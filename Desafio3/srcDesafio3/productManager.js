@@ -20,17 +20,31 @@ import fs  from "fs";
     }
 
 /*     AddProduct  */
-    async addProduct(product){
+    async addProduct(title,description,price,thumbnail,stock){
+    
         try {
             if(this.fileExists()){
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
                 const productId = this.generateId(products);
                 product.id = productId;
+                //Construccion de objeto
+                const product ={
+                title:title,
+                description:description,
+                price:price,
+                thumbnail:thumbnail,
+                code:productId,
+                stock:stock
+                    };
+                    //Validación de info
+                    if(!title||!description||!price||!thumbnail||!stock){
+                        return console.log("Falta información");
+                    }else{
                 products.push(product);
                 // console.log("Product: ",product); Prueba de que funciona y muestra producto
                 await fs.promises.writeFile(this.path,JSON.stringify(products,null,2));
-                return product;
+                return product;}
             }
             else{
                 const productId = this.generateId([]);
@@ -142,7 +156,7 @@ import fs  from "fs";
 
 // const principalFunction =async ()=> {
 //     try {
-// /*         Producto Prueba agregado */
+/*         Producto Prueba agregado */
 
 //         // const addedProduct = await manager.addProduct({
 //         //     title:"producto prueba 2",
@@ -154,7 +168,7 @@ import fs  from "fs";
 //         // });
 //         // console.log("addedProduct: ",addedProduct);
 
-// /*          Producto Busqueda ID */
+/*          Producto Busqueda ID */
 
 //         // const findProductById = await manager.getProductsById(3);
 //         // console.log("findProductById: ", findProductById);
@@ -163,7 +177,7 @@ import fs  from "fs";
 
 //         // const allProducts = await manager.getProducts();
 
-// /*        Updateproducts elegir que se quiere modificar */
+/*        Updateproducts elegir que se quiere modificar */
 
 //         // const updatedProduct = await manager.updateProduct(
 //         //     2, /* Cambiar ID de producto */
@@ -178,7 +192,7 @@ import fs  from "fs";
 //         // });
 //         // console.log("updatedProduct: ", updatedProduct)
 
-// /*        DeleteProduct */
+/*        DeleteProduct */
 //         const deletedProduct = await manager.deleteProduct(3);
 //         console.log("DeleteProduct: ",deletedProduct)
 //     } catch (error) {
