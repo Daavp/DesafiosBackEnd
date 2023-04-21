@@ -5,15 +5,15 @@ const app = express();
 const port = 8080;
 const manager = new ProductManager("./products.json");
 
-// USO DE QUERY
+// USO DE QUERY http://localhost:8080/products?limit= numero
 app.get("/products",async (req,res)=>{
     try {
         const allProducts = await manager.getProducts();
         const limit = req.query.limit;
         if(!limit){
-    // Todos los productos        
-                   return res.send(allProducts);
-                };
+         // Todos los productos        
+            return res.send(allProducts);
+            };
     // Limite de producto                       
         const productsLimit = parseInt(req.query.limit);
         const productsDisplay = allProducts.filter(u=>u.id <=productsLimit);
@@ -21,7 +21,7 @@ app.get("/products",async (req,res)=>{
         // console.log("Limit: ", productsDisplay)
         console.log("limit", limit)
     } catch (error) {
-        throw new Error(error.message);
+        res.status(500).send;
     }
 
 });
@@ -31,15 +31,15 @@ app.get("/products/:pid",async (req,res)=>{
     try {
         const allProducts = await manager.getProducts();
         const idProduct = parseInt(req.params.pid);
-        const searchProduct = allProducts.find(u=>u.id === idProduct);
-        if(!searchProduct){
+        const searchProduct = allProducts.find(u=>u.id === idProduct); //Busqueda de numero ID
+        if(!searchProduct){ //Si no lo encuentra da mensaje
             return res.send(`Producto con el id ${idProduct} no existe, intenta con otro numero.`)
         };
-        res.send(searchProduct);
+        res.send(searchProduct);//Si lo encuentra entrega el producto
         // console.log("productid", idProduct)
     }
      catch (error) {
-        throw new Error(error.message);
+        res.status(500).send;
     }
 });
 
