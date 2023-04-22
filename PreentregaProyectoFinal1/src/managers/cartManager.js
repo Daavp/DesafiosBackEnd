@@ -100,19 +100,6 @@ import { __dirname } from "../utils.js";
                 }else{
                     throw new Error(`El carrito no existe`);
                 };
-
-
-                // const findProductIndex = carts.findIndex(item=>item.id === id);
-                // if(!findProductIndex){
-                //     products[findProductIndex]= {
-                //         ...products[findProductIndex],
-                //         ...product
-                //     };
-                //     await fs.promises.writeFile(this.path,JSON.stringify(products,null,2));
-                //     return `El producto con el id ${id} fue modificado`;
-                // } else {
-                //     throw new Error(`El producto con el id ${id} no existe`);
-                // }
             }
             else{
                 throw new Error("El archivo no existe")

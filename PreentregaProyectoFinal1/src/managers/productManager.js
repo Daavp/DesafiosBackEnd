@@ -28,17 +28,8 @@ import { __dirname } from "../utils.js";
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
                 const productId = this.generateId(products);
-                product.id = productId;
-                
-                // title:title,
-                // description:description,
-                // code:productId,
-                // price:price,
-                // status
-                // stock:stock
-                // category
-                // thumbnails:thumbnails,
-
+                product.id = productId;                
+                // title:title,   // description:description,   // code:productId,   // price:price,   // status   // stock:stock   // category   // thumbnails:thumbnails,
                     //Validación de info
                     if(!product.title||!product.description||!product.code||!product.price||!product.status||!product.stock||!product.category){
                        throw new Error(error.message);
