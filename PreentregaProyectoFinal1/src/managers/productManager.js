@@ -1,8 +1,10 @@
 import fs  from "fs";
+import path from "path";
+import { __dirname } from "../utils.js";
 
  class ProductManager {
     constructor(pathName){
-        this.path = pathName;
+        this.path = path.join(__dirname,`/files/${pathName}`);
     }
 /*     FileExists Verificando archivo  */
     fileExists(){
@@ -21,25 +23,25 @@ import fs  from "fs";
 
 /*     AddProduct  */
     async addProduct(product){
-    
         try {
             if(this.fileExists()){
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
                 const productId = this.generateId(products);
                 product.id = productId;
-                //Construccion de objeto
-                const product ={
-                title:title,
-                description:description,
-                price:price,
-                thumbnail:thumbnail,
-                code:productId,
-                stock:stock
-                    };
+                
+                // title:title,
+                // description:description,
+                // code:productId,
+                // price:price,
+                // status
+                // stock:stock
+                // category
+                // thumbnails:thumbnails,
+
                     //Validación de info
-                    if(!title||!description||!price||!thumbnail||!stock){
-                        return console.log("Falta información");
+                    if(!product.title||!product.description||!product.code||!product.price||!product.status||!product.stock||!product.category){
+                       throw new Error(error.message);
                     }else{
                 products.push(product);
                 // console.log("Product: ",product); Prueba de que funciona y muestra producto
@@ -64,8 +66,6 @@ import fs  from "fs";
             if(this.fileExists()){
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
-                // console.log("allProducts: ",products); 
-                // console.log(content);
                 return products;               
             }
             else{
@@ -82,7 +82,7 @@ import fs  from "fs";
                 if(this.fileExists()){
                     const content = await fs.promises.readFile(this.path,"utf-8");
                     const products = JSON.parse(content);
-                    const findProduct = products.find(item=>item.id === id);
+                    const findProduct = products.find(item=>item.id === parseInt(id));
                     if(findProduct){
                         return findProduct;
                     } else {
@@ -114,7 +114,7 @@ import fs  from "fs";
                     return `El producto con el id ${id} fue eliminado`;
 
                 } else {
-                    throw new Error(`El producto con el id ${id} no existe`);
+                    throw new Error(`El producto con el id ${id} no existe o fue eliminado`);
                 }
             }
             else{
@@ -129,10 +129,12 @@ import fs  from "fs";
     async updateProduct(id, product){
         try {
             if(this.fileExists()){
+                
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
+
                 const findProductIndex = products.findIndex(item=>item.id === id);
-                if(findProductIndex>=0){
+                if(!findProductIndex){
                     products[findProductIndex]= {
                         ...products[findProductIndex],
                         ...product
