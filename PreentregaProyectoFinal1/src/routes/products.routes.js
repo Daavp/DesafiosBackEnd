@@ -44,7 +44,7 @@ router.post("/",async(req,res)=>{
         const productSaved = await manager.addProduct(newProduct);
         res.json({status:"success", message:"Producto creado", data:productSaved}); //Mensaje de exito de producto creado
     } catch (error) {
-        res.status(500).send({status:"Error al ingresar los campos requeridos, faltan datos."});
+        return res.status(500).send({message:error.message});
     }
 });
 

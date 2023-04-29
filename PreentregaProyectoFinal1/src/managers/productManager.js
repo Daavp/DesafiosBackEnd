@@ -28,12 +28,18 @@ import { __dirname } from "../utils.js";
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
                 const productId = this.generateId(products);
+                const findProductCode = products.findIndex(item=>item.code === product.code);
                 product.id = productId;                
-                // title:title,   // description:description,   // code:productId,   // price:price,   // status   // stock:stock   // category   // thumbnails:thumbnails,
+
                     //Validación de info
-                    if(!product.title||!product.description||!product.code||!product.price||!product.status||!product.stock||!product.category){
+                if(findProductCode>=0){//primera verificación de que el codigo este libre, si no da error
+                    throw new Error(`No se puede crear producto con el codigo ${product.code}, el codigo ya lo está utilizando otro producto `);
+}
+                // title:title,   // description:description,   // code:productId,   // price:price,   // status   // stock:stock   // category   // thumbnails:thumbnails,
+                    else if(!product.title||!product.description||!product.code||!product.price||!product.status||!product.stock||!product.category){
                        throw new Error(error.message);
-                    }else{
+                    }
+                    else{
                 products.push(product);
                 // console.log("Product: ",product); Prueba de que funciona y muestra producto
                 await fs.promises.writeFile(this.path,JSON.stringify(products,null,2));
@@ -125,7 +131,8 @@ import { __dirname } from "../utils.js";
                 const products = JSON.parse(content);
 
                 const findProductIndex = products.findIndex(item=>item.id === id);
-                if(!findProductIndex){
+                console.log (findProductIndex);
+                if(findProductIndex >=0){ //Corrección para que encuentre o de error si no lo encuentra
                     products[findProductIndex]= {
                         ...products[findProductIndex],
                         ...product
@@ -133,7 +140,7 @@ import { __dirname } from "../utils.js";
                     await fs.promises.writeFile(this.path,JSON.stringify(products,null,2));
                     return `El producto con el id ${id} fue modificado`;
                 } else {
-                    throw new Error(`El producto con el id ${id} no existe`);
+                    throw new Error(`El producto no se puede modificar, el id ${id} no existe`);
                 }
             }
             else{

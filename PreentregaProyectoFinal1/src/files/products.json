@@ -4,7 +4,7 @@
     "description": "Este es un producto prueba",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc1",
     "stock": "25",
     "id": 1
   },
@@ -13,7 +13,7 @@
     "description": "Descripción modificada",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc2",
     "stock": "25",
     "id": 2
   },
@@ -22,7 +22,7 @@
     "description": "Descripción modificada",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc3",
     "stock": "25",
     "id": 3
   },
@@ -31,7 +31,7 @@
     "description": "Descripción modificada",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc4",
     "stock": "25",
     "id": 4
   },
@@ -40,7 +40,7 @@
     "description": "Descripción modificada",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc5",
     "stock": "25",
     "id": 5
   },
@@ -49,7 +49,7 @@
     "description": "Este es un producto prueba",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc6",
     "stock": "25",
     "id": 6
   },
@@ -58,41 +58,41 @@
     "description": "Descripción modificada",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc7",
     "stock": "25",
     "id": 7
   },
   {
     "title": "producto prueba 8",
-    "description": "Descripción modificada",
+    "description": " Descripcion prueba modificada 1",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc8",
     "stock": "25",
     "id": 8
   },
   {
     "title": "producto prueba 9",
-    "description": "Descripción modificada",
+    "description": " Descripcion prueba modificada 2",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc9",
     "stock": "25",
     "id": 9
   },
   {
     "title": "producto prueba 10",
-    "description": "Descripción modificada",
+    "description": " Descripcion prueba modificada 1",
     "price": "200",
     "thumbnail": "Sin imagen",
-    "code": "abc123",
+    "code": "abc10",
     "stock": "25",
     "id": 10
   },
   {
     "title": "Producto prueba Postman",
     "description": " Descripcion prueba",
-    "code": "asd123",
+    "code": "abc11",
     "price": 300,
     "status": "true",
     "stock": 1,
@@ -102,8 +102,8 @@
   },
   {
     "title": "Producto prueba Postman",
-    "description": " Descripcion prueba modificada 1",
-    "code": "asd123",
+    "description": " Descripcion prueba",
+    "code": "abc12",
     "price": 300,
     "status": "true",
     "stock": 1,
