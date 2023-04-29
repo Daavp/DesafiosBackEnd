@@ -48,7 +48,7 @@ router.post("/",async(req,res)=>{
     }
 });
 
-// Rutas de Productos Metodos PUT => NO DEBE ACTUALIZAR O ELIMINAR ID     //Actualizar productos con /:pid
+// Rutas de Productos Metodos PUT => NO DEBE ACTUALIZAR O ELIMINAR ID     //Actualizar productos con /:pid asd
     router.put("/:pid",async (req,res)=>{
         try {
             const updateData = req.body;
