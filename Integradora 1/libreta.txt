@@ -1,0 +1,52 @@
+product manager info
+/* // Utilizar la clase */
+// const manager = new ProductManager("./products.json");
+
+// const principalFunction =async ()=> {
+//     try {
+/*         Producto Prueba agregado */
+
+//         // const addedProduct = await manager.addProduct({
+//         //     title:"producto prueba 2",
+//         //     description:"Este es un producto prueba",
+//         //     price:"200",
+//         //     thumbnail:"Sin imagen",
+//         //     code:"abc123",
+//         //     stock:"25"
+//         // });
+//         // console.log("addedProduct: ",addedProduct);
+
+/*          Producto Busqueda ID */
+
+//         // const findProductById = await manager.getProductsById(3);
+//         // console.log("findProductById: ", findProductById);
+
+// /*          allProducts Busqueda */
+
+//         // const allProducts = await manager.getProducts();
+
+/*        Updateproducts elegir que se quiere modificar */
+
+//         // const updatedProduct = await manager.updateProduct(
+//         //     2, /* Cambiar ID de producto */
+//         //     {
+//         // //     title:"",
+//         //     description:"Descripción modificada",
+//         // //     price:"",
+//         // //     thumbnail:"",
+//         // //     code:"",
+//         // //     stock:""
+
+//         // });
+//         // console.log("updatedProduct: ", updatedProduct)
+
+/*        DeleteProduct */
+//         const deletedProduct = await manager.deleteProduct(3);
+//         console.log("DeleteProduct: ",deletedProduct)
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+// principalFunction();
+

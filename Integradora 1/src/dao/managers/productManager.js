@@ -1,10 +1,11 @@
 import fs  from "fs";
 import path from "path";
-import { __dirname } from "../utils.js";
+import { __dirname } from "../../utils.js";
+import { options } from "../../config/options.js";
 
  class ProductManager {
     constructor(pathName){
-        this.path = path.join(__dirname,`/files/${pathName}`);
+        this.path = path.join(__dirname,`/dao/files/${options.filesystem.products}`);
     }
 /*     FileExists Verificando archivo  */
     fileExists(){
@@ -150,56 +151,6 @@ import { __dirname } from "../utils.js";
             throw new Error(error.message);
         }
     };
-}
-/* // Utilizar la clase */
-// const manager = new ProductManager("./products.json");
-
-// const principalFunction =async ()=> {
-//     try {
-/*         Producto Prueba agregado */
-
-//         // const addedProduct = await manager.addProduct({
-//         //     title:"producto prueba 2",
-//         //     description:"Este es un producto prueba",
-//         //     price:"200",
-//         //     thumbnail:"Sin imagen",
-//         //     code:"abc123",
-//         //     stock:"25"
-//         // });
-//         // console.log("addedProduct: ",addedProduct);
-
-/*          Producto Busqueda ID */
-
-//         // const findProductById = await manager.getProductsById(3);
-//         // console.log("findProductById: ", findProductById);
-
-// /*          allProducts Busqueda */
-
-//         // const allProducts = await manager.getProducts();
-
-/*        Updateproducts elegir que se quiere modificar */
-
-//         // const updatedProduct = await manager.updateProduct(
-//         //     2, /* Cambiar ID de producto */
-//         //     {
-//         // //     title:"",
-//         //     description:"Descripción modificada",
-//         // //     price:"",
-//         // //     thumbnail:"",
-//         // //     code:"",
-//         // //     stock:""
-
-//         // });
-//         // console.log("updatedProduct: ", updatedProduct)
-
-/*        DeleteProduct */
-//         const deletedProduct = await manager.deleteProduct(3);
-//         console.log("DeleteProduct: ",deletedProduct)
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
-
-// principalFunction();
+};
 
 export {ProductManager};

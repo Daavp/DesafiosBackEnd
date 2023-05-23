@@ -1,10 +1,11 @@
 import fs  from "fs";
 import path from "path";
-import { __dirname } from "../utils.js";
+import { __dirname } from "../../utils.js";
+import { options } from "../../config/options.js";
 
  class CartManager {
     constructor(pathName){
-        this.path = path.join(__dirname,`/files/${pathName}`);
+        this.path = path.join(__dirname,`/dao/files/${options.filesystem.carts}`);
     }
 /*     FileExists Verificando archivo  */
     fileExists(){
@@ -108,6 +109,6 @@ import { __dirname } from "../utils.js";
             throw new Error(error.message);
         }
     };
-}
+};
 
 export {CartManager};

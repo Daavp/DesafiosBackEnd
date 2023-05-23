@@ -1,9 +1,12 @@
 import {Router} from "express";
-import { CartManager } from "../managers/cartManager.js";
-import { ProductManager } from "../managers/productManager.js";
+import { CartManager } from "../dao/managers/cartManager.js";
+import { ProductManager } from "../dao/managers/productManager.js";
+import { productManagerDb } from "../dao/managers/productManager.mongo.js";
+import { cartsManagerDb } from "../dao/managers/cartManager.mongo.js";
+import { connectDB } from "../config/dbConnection.js";
 
-const cartManager = new CartManager("cart.json");
-const productManager = new ProductManager("products.json");
+const cartManager = new cartsManagerDb();
+const productManager = new productManagerDb();
 //Grupo de rutas de products
 const router = Router();
 
@@ -46,9 +49,10 @@ router.post("/:cid/product/:pid", async(req,res)=>{
         const productId = req.params.pid;
         const cart= await cartManager.getCartById(cartId);
         if(cart){
-            const product = await productManager.getProductsById(productId);
+            const product = await productManager.getProductById(productId);
             if(product){
                 const response = await cartManager.addProductToCart(cartId,productId);
+                connectDB();
                 res.json({status:"success",message:response});
             }else {
                 res.status(400).json({status:"error", message:"Producto solicitado no existe"});

@@ -1,14 +1,18 @@
 import express from "express";
-import { __dirname } from "./utils.js"; //Ubicación __dirname
-import path from "path"; //Para unir rutas sería path.join(__dirname,"/ruta1/ruta2/ruta...") Se concatenan las rutas
-import {Server} from "socket.io";
 import handlebars from "express-handlebars";
-import { viewsRouter } from "./routes/views.routes.js";
+import mongoose from "mongoose";
+import path from "path"; //Para unir rutas sería path.join(__dirname,"/ruta1/ruta2/ruta...") Se concatenan las rutas
 
+import { __dirname } from "./utils.js"; //Ubicación __dirname
+import {Server} from "socket.io";
+import { viewsRouter } from "./routes/views.routes.js"; 
+import { productsModel } from "./models/products.model.js";
 //Routers
 import { routerProducts } from "./routes/products.routes.js";
 import { routerCart } from "./routes/cart.routes.js";
-import { ProductManager } from "./managers/productManager.js";
+import { ProductManager } from "./dao/managers/productManager.js";
+import { connectDB } from "./config/dbConnection.js";
+
 const manager = new ProductManager("products.json");
 
 //Configuracion del servidor HTTP
@@ -18,6 +22,9 @@ const port = 8080;
 app.use(express.static(path.join(__dirname,"/public")));
 //Servidor HTTP
 const httpServer = app.listen(port,()=>console.log(`Server listening on port ${port}`));
+
+//Conexión a DB
+connectDB();
 
 //Servidor de webSocket
 const socketServer = new Server (httpServer);
@@ -41,7 +48,9 @@ app.use("/api/carts",routerCart);
 //Routes Views
 app.use("/",viewsRouter);
 
-const allProducts = await manager.getProducts();
+const allProducts = await productsModel.find();//await manager.getProducts();
+
+
 socketServer.on("connection",(socket)=>{
     // console.log(`nuevo socket cliente conectado ${socket.id}`);
     socketServer.emit("wellcomeMsg", `Cliente conectado en socket: ${socket.id}`);

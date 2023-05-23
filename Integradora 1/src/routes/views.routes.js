@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { ProductManager } from "../managers/productManager.js";
+import { ProductManager } from "../dao/managers/productManager.js";
+import { productManagerDb } from "../dao/managers/productManager.mongo.js";
+import { options } from "../config/options.js";
 
-const manager = new ProductManager("products.json");
+const manager = new productManagerDb();
 const router = Router();
 
 //Endpoints
@@ -24,6 +26,14 @@ router.get("/realTimeProducts", async (req,res)=>{
         res.status(500).send({status:"Error al obtener los productos"});
     }
 });
-
+/* router.get("/realTimeProductsDB", async(req,res)=>{
+    try {
+        const products = await productsModel.find(); //find en la DB
+        return res.render("realTimeProducts",{products});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({status:"Error al obtener los productos"})
+    }
+    }); */
 
 export {router as viewsRouter};

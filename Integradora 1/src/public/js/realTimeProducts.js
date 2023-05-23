@@ -11,6 +11,7 @@ socketClient.on("wellcomeMsg",(data)=>{
 
 const allProductsObj =document.getElementById("allProducts");
 
+
 socketClient.on("allProductsServer",(data)=>{
     allProducts.innerHTML ="";
     data.forEach(itemProd => {
