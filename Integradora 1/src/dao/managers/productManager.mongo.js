@@ -8,9 +8,9 @@ export class productManagerDb {
         this.model = productsModel;
     }
 
-    async getProducts(){
+    async getProducts(limit){
         try {
-            const data = await this.model.find();
+            const data = await this.model.find().limit(limit);
             return data;
         } catch (error) {
             throw new Error(`Error al obtener los productos o no hay productos en la BD ${error.message}`);

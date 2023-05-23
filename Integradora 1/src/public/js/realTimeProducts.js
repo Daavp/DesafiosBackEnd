@@ -17,7 +17,7 @@ socketClient.on("allProductsServer",(data)=>{
     data.forEach(itemProd => {
         const product = document.createElement("p");
         product.innerHTML = `Title: ${itemProd.title} Code: ${itemProd.code}
-        Description: ${itemProd.description} Id: ${itemProd.id} Price: ${itemProd.price} thumbnail: ${itemProd.thumbnail}`;
+        Description: ${itemProd.description} Id: ${itemProd._id} Price: ${itemProd.price} thumbnail: ${itemProd.thumbnail}`;
         allProducts.appendChild(product);
     });
 })

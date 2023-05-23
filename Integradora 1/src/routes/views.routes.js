@@ -26,14 +26,9 @@ router.get("/realTimeProducts", async (req,res)=>{
         res.status(500).send({status:"Error al obtener los productos"});
     }
 });
-/* router.get("/realTimeProductsDB", async(req,res)=>{
-    try {
-        const products = await productsModel.find(); //find en la DB
-        return res.render("realTimeProducts",{products});
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send({status:"Error al obtener los productos"})
-    }
-    }); */
+//Render de chat
+router.get("/chat",(req,res)=>{
+    res.render("chat");
+});
 
 export {router as viewsRouter};

@@ -11,16 +11,15 @@ const router = Router();
 // Rutas de usuarios Metodos GET     //Obtener productos con ?LIMIT
 router.get("/",async (req,res)=>{ //USO DE QUERY http://localhost:8080/api/products?limit= numero
     try {
-        const allProducts = await manager.getProducts();
         const limit = req.query.limit;
         if(!limit){
-         // Todos los productos      
+         // Todos los productos
+            const allProducts = await manager.getProducts();      
             return res.json({status:"success", data: allProducts}); //Aqui va lo que se obtiene del resultado 
             };
         // Limite de producto                       
-            const productsLimit = parseInt(req.query.limit);
-            const productsDisplay = allProducts.filter(u=>u.id <=productsLimit);
-            return res.json({status:"success", data:productsDisplay});
+            const limitProducts = await manager.getProducts(limit);
+            return res.json({status:"success", data:limitProducts});
         } catch (error) {
             res.status(500).send({status:"Error al obtener los productos"});
         }

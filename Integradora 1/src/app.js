@@ -12,8 +12,11 @@ import { routerProducts } from "./routes/products.routes.js";
 import { routerCart } from "./routes/cart.routes.js";
 import { ProductManager } from "./dao/managers/productManager.js";
 import { connectDB } from "./config/dbConnection.js";
+import { productManagerDb } from "./dao/managers/productManager.mongo.js";
+import { chatMongo } from "./dao/managers/chatMongo.js";
 
-const manager = new ProductManager("products.json");
+//const manager = new ProductManager("products.json"); FS
+const manager = new productManagerDb();
 
 //Configuracion del servidor HTTP
 const app = express();
@@ -48,14 +51,27 @@ app.use("/api/carts",routerCart);
 //Routes Views
 app.use("/",viewsRouter);
 
-const allProducts = await productsModel.find();//await manager.getProducts();
 
 
-socketServer.on("connection",(socket)=>{
+const chatService = new chatMongo();
+
+socketServer.on("connection", async (socket)=>{
     // console.log(`nuevo socket cliente conectado ${socket.id}`);
+    const allProducts = await manager.getProducts();//await manager.getProducts();
+    const messages = await chatService.getMessages();
     socketServer.emit("wellcomeMsg", `Cliente conectado en socket: ${socket.id}`);
     socketServer.emit("allProductsServer",allProducts);//Aqui entrego lo que quiero con emit
-})
+    socketServer.emit("msgHistory", messages);
+
+    //recibir mensajes
+    socket.on("message", async(data)=>{
+        await chatService.addMessage(data);
+        const messages = await chatService.getMessages();
+        socketServer.emit("msgHistory", messages);
+
+    });
+    
+});
 
 /*cada vez que se conecte un cliente llamar manager,
 obtener productos y emitir evento con productos para el cliente.
