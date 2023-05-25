@@ -9,15 +9,14 @@ socketClient.on("wellcomeMsg",(data)=>{
     console.log(data)
 });
 
-const allProductsObj =document.getElementById("allProducts");
-
-
 socketClient.on("allProductsServer",(data)=>{
+    console.log(data);
     allProducts.innerHTML ="";
     data.forEach(itemProd => {
         const product = document.createElement("p");
         product.innerHTML = `Title: ${itemProd.title} Code: ${itemProd.code}
         Description: ${itemProd.description} Id: ${itemProd._id} Price: ${itemProd.price} thumbnail: ${itemProd.thumbnail}`;
         allProducts.appendChild(product);
+
     });
 })

@@ -6,6 +6,7 @@ export class chatMongo{
     }
     async addMessage(message){
         try {
+            console.log(message);
             const data = await this.model.create(message);
             const response = JSON.parse(JSON.stringify(data));
             return response;

@@ -17,6 +17,7 @@ import { chatMongo } from "./dao/managers/chatMongo.js";
 
 //const manager = new ProductManager("products.json"); FS
 const manager = new productManagerDb();
+const chatService = new chatMongo();
 
 //Configuracion del servidor HTTP
 const app = express();
@@ -53,14 +54,13 @@ app.use("/",viewsRouter);
 
 
 
-const chatService = new chatMongo();
 
 socketServer.on("connection", async (socket)=>{
     // console.log(`nuevo socket cliente conectado ${socket.id}`);
     const allProducts = await manager.getProducts();//await manager.getProducts();
     const messages = await chatService.getMessages();
     socketServer.emit("wellcomeMsg", `Cliente conectado en socket: ${socket.id}`);
-    socketServer.emit("allProductsServer",allProducts);//Aqui entrego lo que quiero con emit
+    socketServer.emit("allProductsServer",allProducts);//Aqui entrego lo que quiero con emit  
     socketServer.emit("msgHistory", messages);
 
     //recibir mensajes
@@ -70,6 +70,7 @@ socketServer.on("connection", async (socket)=>{
         socketServer.emit("msgHistory", messages);
 
     });
+    
     
 });
 
