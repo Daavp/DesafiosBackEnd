@@ -8,8 +8,60 @@ const manager = new productManagerDb();
 //Grupo de rutas de products
 const router = Router();
 
-// Rutas de usuarios Metodos GET     //Obtener productos con ?LIMIT
-router.get("/",async (req,res)=>{ //USO DE QUERY http://localhost:8080/api/products?limit= numero
+router.get("/", async(req,res)=>{
+    try {
+        const {limit =10, page=1, sort="asc", category, stock} = req.query;
+        if([!"asc","desc"].includes(sort)){
+            res.json({status:"error", message:"Ordenamiento no valido, ingresar asc o desc"})
+        };
+        const sortValue = sort === "asc" ? 1 : -1;
+        const stockValue = stock === 0 ? undefined : parseInt(stock);
+        let query = {};
+            if(category && stock){
+                query = {category: category, stock: stockValue}
+            } else{
+                if(category|| stockValue){
+                    if (category){
+                        query ={category:category}
+                    }else{
+                        query ={stock:stockValue}
+                    }
+                }
+            };
+/*            console.log("limit",limit,"page",page,"sortvalue",sortValue,"category",category,"stock",stockValue) 
+           console.log("query",query); */
+           const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+            const result = await manager.getPaginate(query, {
+                page,
+                limit,
+                sort:{price:sortValue},
+                lean:true
+            });
+            console.log("result",result);
+            const response ={
+                status: "success",
+                payload:result.docs,
+                totalPages:result.totalPages,
+                prevPage:result.prevPage,
+                nextPage:result.nextPage,
+                page:result.page,
+                hasPrevPage:result.hasPrevPage,
+                hasNextPage:result.hasNextPage,
+                prevLink: result.hasPrevPage ? `${baseUrl}?page=${result.prevPage}` : null,
+                nextLink: result.hasNextPage ? `${baseUrl}?page=${result.nextPage}` : null,
+
+
+            };
+            console.log("response",response);
+            res.json(response);
+
+    } catch (error) {
+        res.status(500).send({status:"Error al obtener los productos"});
+    }
+});
+
+// Rutas de usuarios Metodos GET    //Obtener productos con ?LIMIT
+/* router.get("/",async (req,res)=>{ //USO DE QUERY http://localhost:8080/api/products?limit= numero
     try {
         const limit = req.query.limit;
         if(!limit){
@@ -23,7 +75,8 @@ router.get("/",async (req,res)=>{ //USO DE QUERY http://localhost:8080/api/produ
         } catch (error) {
             res.status(500).send({status:"Error al obtener los productos"});
         }
-});
+}); */
+
 /* //Obtener productos con /:pid // Busqueda de ID PARAMS CON FS
 router.get("/:pid",async (req,res)=>{
     try {

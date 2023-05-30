@@ -66,5 +66,97 @@ router.post("/:cid/product/:pid", async(req,res)=>{
     }
 
 });
+// DELETE api/carts/:cid/products/:pid deberá eliminar del carrito el producto seleccionado.
+router.delete("/:cid/products/:pid", async(req,res)=>{
+    try {
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
+        const cart= await cartManager.getCartById(cartId);
+        if(cart){
+            const product = await productManager.getProductById(productId);
+            if(product){
+                const response = await cartManager.deleteProductFromCart(cartId,productId);
+                connectDB();
+                res.json({status:"success",message:response});
+            }else {
+                res.status(400).json({status:"error", message:"No existe ID de producto en la BD"});
+            }
+        } else {
+            res.status(400).json({status:"error", message:"Carrito no existe"});
+        }
+        
+    } catch (error) {
+        res.status(500).json({status:"error", message:error.message});
+    }
+});
+//PUT api/carts/:cid deberá actualizar el carrito con un arreglo de productos con el formato especificado arriba.
+//array= 
+/* {
+    "product":"646ad444d05c674202b03bef", //string
+    "quantity":20
+} */
+router.put("/:cid", async(req,res)=>{
+    try {
+        const cartId = req.params.cid;
+        const productId = req.body.product;
+        const productQuantity = req.body.quantity;
+        const cart= await cartManager.getCartById(cartId);
+        if(cart){
+            const product = await productManager.getProductById(productId);
+            if(product){
+                const response = await cartManager.addProductToCartArray(cartId,productId,productQuantity);
+                connectDB();
+                res.json({status:"success",message:response});
+            }else {
+                res.status(400).json({status:"error", message:"Producto solicitado no existe"});
+            }
+        } else {
+            res.status(400).json({status:"error", message:"Carrito no existe"});
+        }
+    } catch (error) {
+        res.status(500).json({status:"error", message:error.message});
+    }
+});
+//PUT api/carts/:cid/products/:pid deberá poder actualizar SÓLO la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
+router.put("/:cid/products/:pid", async(req,res)=>{
+    try {
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
+        const productQuantity = req.body.quantity;
+        const cart= await cartManager.getCartById(cartId);
+        if(cart){
+            const product = await productManager.getProductById(productId);
+            if(product){
+                const response = await cartManager.changeProductQuantity(cartId,productId,productQuantity);
+                connectDB();
+                res.json({status:"success",message:response});
+            }else {
+                res.status(400).json({status:"error", message:"Producto solicitado no existe"});
+            }
+        } else {
+            res.status(400).json({status:"error", message:"Carrito no existe"});
+        }
+        
+    } catch (error) {
+        res.status(500).json({status:"error", message:error.message});
+    }
+});
+//DELETE api/carts/:cid deberá eliminar todos los productos del carrito 
+router.delete("/:cid", async(req,res)=>{
+    try {
+        const cartId = req.params.cid;
+        const cart= await cartManager.getCartById(cartId);
+        if(cart){
+            const response = await cartManager.emptyCart(cartId);
+            connectDB();
+            res.json({status:"success",message:response});
+        } else {
+            res.status(400).json({status:"error", message:"Carrito no existe"});
+        }
+        
+    } catch (error) {
+        res.status(500).json({status:"error", message:error.message});
+    }
+});
 
 export {router as routerCart};

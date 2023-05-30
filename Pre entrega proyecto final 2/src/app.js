@@ -41,6 +41,7 @@ app.set('views', path.join(__dirname,"/views"));
 
 // Middlewares de Aplicacion
 app.use(express.json()); //Interpretar POST JSON
+app.use(express.static(path.join(__dirname,"/public")))
 app.use(express.urlencoded({extended:true}));
 
 //Routes products
