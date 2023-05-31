@@ -34,7 +34,17 @@ async getCartById(id){
         throw new Error(`Error al obtener el carrito o no existe en la BD`);
     }
 };
-
+async getCarts(){
+    try {
+        const data = await this.modelCarts.find();
+        if(!data){
+            throw new Error(`No existen carritos`);                
+        };
+        return data; 
+    } catch (error) {
+        throw new Error(`Error al obtener los carritos`);
+    }
+};
 
 /*     // updateProduct  */
 async addProductToCart(cartId, productId){

@@ -9,7 +9,21 @@ const cartManager = new cartsManagerDb();
 const productManager = new productManagerDb();
 //Grupo de rutas de products
 const router = Router();
+//Obtener carritos
+router.get("/getCarts",async(req,res)=>{
+    try {
+        const cart= await cartManager.getCarts();
+        if(cart){
+            res.json({status:"success", data:cart }); //Mensaje de carrito encontrado
+        } else {
+            res.status(400).json({status:"error", message:"No hay carritos"});
+        }
+        
+    } catch (error) {
+        res.status(500).json({status:"error", message:error.message});
+    }
 
+});
 // Rutas de Productos Metodos POST => crear nuevo carrito. id:number NO SE DEBEN DUPLICAR AUTOGENERABLE, products: array que contendra objetos que representen cada producto
     //Crear carrito con /api/carts/:cid
 router.post("/",async(req,res)=>{
