@@ -96,16 +96,12 @@ router.get("/products",async(req,res)=>{
 router.get("/carts/:cid",async(req,res)=>{
     
     try {
-        const data = await cartManager.getCartById(req.params.cid);
-        console.log("data", data.products);
-        const productsLength = data.products.length;
-        const cartProducts = data.products;
+        const data = (await cartManager.getCartById(req.params.cid)).populate("products.product");
         const response = {
-            cartId:data._id,
-            totalProducts:productsLength,
-            cartProducts:cartProducts
+            cartId:(await data)._id,
+            totalProducts:(await data).products.length,
+            cartProducts: (await data).products
         }
-        
             console.log("response",response);
             res.render("carts",response);
     } catch (error) {
