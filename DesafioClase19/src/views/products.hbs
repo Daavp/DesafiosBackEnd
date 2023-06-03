@@ -1,6 +1,5 @@
 <h1>Pagina de productos</h1>
 <br/>
-
 <hr>
 <div>
     <input type="text" placeholder="Ingresa tu Carrito" id="cartIdShop" />
@@ -12,7 +11,7 @@
         <ul>
         {{#each payload}}
             <li>{{this.title}} - Precio: ${{this.price}}</li>
-            <button onclick="location.href='/products/{{this._id}}'" type="button">Ver producto</button>
+            <button onclick="location.href='http://localhost:8080/products/{{this._id}}'" type="button">Ver producto</button>
             <button onclick="addToCart(`{{this._id}}`)">Agregar al carrito</button>
             <br></br>
         {{/each}}

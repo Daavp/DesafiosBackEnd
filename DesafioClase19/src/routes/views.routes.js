@@ -93,49 +93,21 @@ router.get("/products",async(req,res)=>{
         return res.status(500).send({status:"Error al obtener los productos"});
     }
 });
-// router.get("/carts/:cid",async(req,res)=>{
+router.get("/carts/:cid",async(req,res)=>{
     
-//     try {
-//         const data = await cartManager.getCartById(req.params.cid)/* .populate("products.product") */;
-//         const response = {
-//             cartId:data._id,
-//             totalProducts:data.products.length,
-//             cartProducts:data.products
-//         }
-
-//             console.log("response",response);
-//             res.render("carts",response);
-//     } catch (error) {
-//         return res.status(500).send({status:"Error al obtener los productos del carrito BD"});
-//     }
-// });
-router.get('/carts/:cid', async (req, res) => {
-  try {
-    const data = await cartManager.getCartById(req.params.cid);
-    const products = [];
-    data.products.map((product) => {
-      products.push({
-        id: product.product._id,
-        title: product.product.title,
-        description: product.product.description,
-        quantity: product.quantity,
-        price: product.product.price,
-        category: product.product.category,
-      });
-    });
-    const response = {
-        cartId: data._id,
-        totalProducts: data.products.length,
-        cartProducts: products,
-      };
-      res.render('carts', response);
+    try {
+        const data = (await cartManager.getCartById(req.params.cid)).populate("products.product");
+        const response = {
+            cartId:(await data)._id,
+            totalProducts:(await data).products.length,
+            cartProducts: (await data).products
+        }
+            console.log("response",response);
+            res.render("carts",response);
     } catch (error) {
-      return res
-        .status(500)
-        .send({ status: 'Error al obtener los productos del carrito BD' });
+        return res.status(500).send({status:"Error al obtener los productos del carrito BD"});
     }
-  });
-
+});
 router.get("/products/:pid",async (req,res)=>{ //BUSQUEDA ID PARAMS MONGO
     try {
         const data = await manager.getProductById(req.params.pid);

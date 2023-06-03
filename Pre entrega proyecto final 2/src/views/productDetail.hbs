@@ -1,5 +1,11 @@
 <h1>Detalle del producto</h1>
 <hr>
+<div>
+    <input type="text" placeholder="Ingresa tu Carrito" id="cartIdShopDetail" />
+</div>
+<br/>
+<hr>
+<div>
 <ul>
 <li>_id: {{_id}}</li>
 <li>title: {{title}}</li>
@@ -10,12 +16,25 @@
 <li>stock: {{stock}}</li>
 <li>category: {{category}}</li>
 </ul>
-<button onclick="addProduct(`{{_id}}`)">Agregar al carrito</button>
+<button onclick="addToCart(`{{this._id}}`)">Agregar al carrito</button>
+</div>
 
 
 
 
+<script>
+console.log("js products");
 
+const cartId = document.getElementById("cartIdShopDetail");
 
-
-<script src="js/productDetail.js"></script>
+ const addToCart = async(productId)=>{
+    if(!cartId){
+        return  console.log("No hay carrito en el cuadro de carrito")
+    };
+        resp =await fetch(`http://localhost:8080/api/carts/${cartId.value}/product/${productId}`,{
+            method:'POST'
+        });
+        result = await resp.json();
+        console.log("Status: ",result.status,"Message: ",result.message);
+    }
+</script>

@@ -25,6 +25,5 @@ const cartsSchema = new mongoose.Schema({
 cartsSchema.pre('findOne',function(){
     this.populate("products.product")
 });
-
 // modelo para realizar operaciones en la coleccion
 export const cartsModel = mongoose.model(cartsCollection,cartsSchema);
