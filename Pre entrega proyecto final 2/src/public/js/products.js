@@ -3,8 +3,8 @@ console.log("js products");
 const cartId = document.getElementById("cartIdShop");
 
  const addToCart = async(productId)=>{
-    if(!cartId){
-        return  console.log("No hay carrito en el cuadro de carrito")
+    if(!cartId.value){
+        return  console.log("No hay ID de carrito en el cuadro de carrito")
     };
         resp =await fetch(`http://localhost:8080/api/carts/${cartId.value}/product/${productId}`,{
             method:'POST'
