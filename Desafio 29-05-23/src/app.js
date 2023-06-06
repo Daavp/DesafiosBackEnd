@@ -2,14 +2,20 @@ import express from "express";
 import handlebars from "express-handlebars";
 import mongoose from "mongoose";
 import path from "path"; //Para unir rutas sería path.join(__dirname,"/ruta1/ruta2/ruta...") Se concatenan las rutas
+import session from "express-session";
+import mongoStore from "connect-mongo";
+
 
 import { __dirname } from "./utils.js"; //Ubicación __dirname
 import {Server} from "socket.io";
 import { viewsRouter } from "./routes/views.routes.js"; 
 import { productsModel } from "./models/products.model.js";
+import { options } from "./config/options.js";
+
 //Routers
 import { routerProducts } from "./routes/products.routes.js";
 import { routerCart } from "./routes/cart.routes.js";
+import { authRouter } from "./routes/auth.routes.js";
 import { ProductManager } from "./dao/managers/productManager.js";
 import { connectDB } from "./config/dbConnection.js";
 import { productManagerDb } from "./dao/managers/productManager.mongo.js";
@@ -29,6 +35,16 @@ const httpServer = app.listen(port,()=>console.log(`Server listening on port ${p
 
 //Conexión a DB
 connectDB();
+
+//configuración de la session
+app.use(session({
+    store: mongoStore.create({
+        mongoUrl:options.mongo.url
+    }),
+    secret:"claveSecreta",
+    resave:true,
+    saveUninitialized:true
+}));
 
 //Servidor de webSocket
 const socketServer = new Server (httpServer);
@@ -53,7 +69,8 @@ app.use("/api/carts",routerCart);
 //Routes Views
 app.use("/",viewsRouter);
 
-
+//Routes Sessions
+app.use("/api/sessions", authRouter)
 
 
 socketServer.on("connection", async (socket)=>{

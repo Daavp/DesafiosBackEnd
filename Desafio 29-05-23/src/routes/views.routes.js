@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, response } from "express";
 import { ProductManager } from "../dao/managers/productManager.js";
 import { productManagerDb } from "../dao/managers/productManager.mongo.js";
 import { cartsManagerDb } from "../dao/managers/cartManager.mongo.js";
@@ -13,6 +13,7 @@ const router = Router();
 //Endpoints
 //Render de productos
 
+//render del home
 router.get("/",async (req,res)=>{
     try {
         const allProducts = await manager.getProducts();
@@ -43,7 +44,7 @@ try {
     }
 });
 
-//render productos con botones
+//render productos con botones// Tiene datos de login de usuario para inicio
 router.get("/products",async(req,res)=>{
     try {
         const {limit =10, page=1, sort, category, stock} = req.query;
@@ -86,7 +87,10 @@ router.get("/products",async(req,res)=>{
                 hasNextPage:result.hasNextPage,
                 prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`,`page=${result.prevPage}`)}` : null,
                 nextLink: result.hasNextPage ? `${baseUrl.replace(`page=${result.page}`,`page=${result.nextPage}`)}` : null,
+                userName:{first_name:req.session.user.first_name,last_name:req.session.user.last_name}
+
             };
+
             console.log("response",response);
             res.render("products",response);
     } catch (error) {
@@ -149,4 +153,25 @@ router.get("/products/:pid",async (req,res)=>{ //BUSQUEDA ID PARAMS MONGO
         res.status(500).send({status:"Error al obtener los productos"});
     }
 });
+//login
+router.get("/login", (req,res)=>{
+    res.render("login");
+});
+
+//signup
+router.get("/signup", (req,res)=>{
+    res.render("signup");
+});
+//profile
+router.get("/profile", (req,res)=>{
+    if(req.session.user){
+        console.log(req.session.user);
+       return res.render("profile",req.session.user);
+    } else {
+        res.redirect("/login")
+    }
+
+});
+
+
 export {router as viewsRouter};
