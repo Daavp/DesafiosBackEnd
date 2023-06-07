@@ -10,10 +10,16 @@ app.get("/products",async (req,res)=>{
     try {
         const allProducts = await manager.getProducts();
         const limit = req.query.limit;
+
         if(!limit){
          // Todos los productos        
             return res.send(allProducts);
             };
+            if (isNaN(limit)){
+                console.log("limit no es numero: ", limit)
+                return res.send("Limite ingresado de productos no valido, no pueden haber letras")
+            };
+
     // Limite de producto                       
         const productsLimit = parseInt(req.query.limit);
         const productsDisplay = allProducts.filter(u=>u.id <=productsLimit);
@@ -32,6 +38,10 @@ app.get("/products/:pid",async (req,res)=>{
         const allProducts = await manager.getProducts();
         const idProduct = parseInt(req.params.pid);
         const searchProduct = allProducts.find(u=>u.id === idProduct); //Busqueda de numero ID
+        if (isNaN(req.params.pid)){
+            console.log("El id que buscas no es un numero: ", idProduct)
+            return res.send(`Id de productos son solo numeros, pueden haber letras: ${req.params.pid}`)
+        };
         if(!searchProduct){ //Si no lo encuentra da mensaje
             return res.send(`Producto con el id ${idProduct} no existe, intenta con otro numero.`)
         };
@@ -39,7 +49,7 @@ app.get("/products/:pid",async (req,res)=>{
         // console.log("productid", idProduct)
     }
      catch (error) {
-        res.status(500).send;
+        res.status(500).send(error);
     }
 });
 
