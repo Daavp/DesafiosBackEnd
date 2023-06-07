@@ -17,7 +17,7 @@ app.get("/products",async (req,res)=>{
             };
             if (isNaN(limit)){
                 console.log("limit no es numero: ", limit)
-                return res.send("Limite ingresado de productos no valido, no pueden haber letras")
+                return res.status(500).send("Limite ingresado de productos no valido, no pueden haber letras")
             };
 
     // Limite de producto                       
@@ -40,10 +40,10 @@ app.get("/products/:pid",async (req,res)=>{
         const searchProduct = allProducts.find(u=>u.id === idProduct); //Busqueda de numero ID
         if (isNaN(req.params.pid)){
             console.log("El id que buscas no es un numero: ", idProduct)
-            return res.send(`Id de productos son solo numeros, pueden haber letras: ${req.params.pid}`)
+            return res.status(500).send(`Id de productos son solo numeros, pueden haber letras: ${req.params.pid}`)
         };
         if(!searchProduct){ //Si no lo encuentra da mensaje
-            return res.send(`Producto con el id ${idProduct} no existe, intenta con otro numero.`)
+            return res.status(500).send(`Producto con el id ${idProduct} no existe, intenta con otro numero.`)
         };
         res.send(searchProduct);//Si lo encuentra entrega el producto
         // console.log("productid", idProduct)
