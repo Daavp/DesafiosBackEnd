@@ -74,7 +74,8 @@ router.get("/products",async(req,res)=>{
                 sort:{price:sortValue},
                 lean:true
             });
-            console.log("result",result);
+            const userData = req.session;
+/*             console.log("result",result); */
             const response ={
                 status: "success",
                 payload:result.docs,
@@ -87,11 +88,11 @@ router.get("/products",async(req,res)=>{
                 hasNextPage:result.hasNextPage,
                 prevLink: result.hasPrevPage ? `${baseUrl.replace(`page=${result.page}`,`page=${result.prevPage}`)}` : null,
                 nextLink: result.hasNextPage ? `${baseUrl.replace(`page=${result.page}`,`page=${result.nextPage}`)}` : null,
-                userName:{first_name:req.session.user.first_name,last_name:req.session.user.last_name}
+                userData:userData
 
             };
-
-            console.log("response",response);
+            
+/*             console.log("response",response); */
             res.render("products",response);
     } catch (error) {
         return res.status(500).send({status:"Error al obtener los productos"});
