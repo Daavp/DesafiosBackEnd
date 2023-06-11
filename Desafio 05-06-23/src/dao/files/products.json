@@ -1,0 +1,125 @@
+[
+  {
+    "title": "producto prueba 1",
+    "description": "Este es un producto prueba",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc1",
+    "stock": "25",
+    "id": 1
+  },
+  {
+    "title": "producto prueba 2",
+    "description": "Descripción modificada",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc2",
+    "stock": "25",
+    "id": 2
+  },
+  {
+    "title": "producto prueba 3",
+    "description": "Descripción modificada",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc3",
+    "stock": "25",
+    "id": 3
+  },
+  {
+    "title": "producto prueba 4",
+    "description": "Descripción modificada",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc4",
+    "stock": "25",
+    "id": 4
+  },
+  {
+    "title": "producto prueba 5",
+    "description": "Descripción modificada",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc5",
+    "stock": "25",
+    "id": 5
+  },
+  {
+    "title": "producto prueba 6",
+    "description": "Este es un producto prueba",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc6",
+    "stock": "25",
+    "id": 6
+  },
+  {
+    "title": "producto prueba 7",
+    "description": "Descripción modificada",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc7",
+    "stock": "25",
+    "id": 7
+  },
+  {
+    "title": "producto prueba 8",
+    "description": " Descripcion prueba modificada 1",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc8",
+    "stock": "25",
+    "id": 8
+  },
+  {
+    "title": "producto prueba 9",
+    "description": " Descripcion prueba modificada 2",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc9",
+    "stock": "25",
+    "id": 9
+  },
+  {
+    "title": "producto prueba 10",
+    "description": " Descripcion prueba modificada 1",
+    "price": "200",
+    "thumbnail": "Sin imagen",
+    "code": "abc10",
+    "stock": "25",
+    "id": 10
+  },
+  {
+    "title": "Producto prueba Postman",
+    "description": " Descripcion prueba",
+    "code": "abc11",
+    "price": 300,
+    "status": "true",
+    "stock": 1,
+    "category": "Categoría prueba",
+    "thumbnail": [],
+    "id": 11
+  },
+  {
+    "title": "Producto prueba Postman",
+    "description": " Descripcion prueba",
+    "code": "abc12",
+    "price": 300,
+    "status": "true",
+    "stock": 1,
+    "category": "Categoría prueba",
+    "thumbnail": [],
+    "id": 12
+  },
+  {
+    "title": "Producto prueba Postman",
+    "description": " Descripcion prueba",
+    "code": "abc13",
+    "price": 300,
+    "status": "true",
+    "stock": 1,
+    "category": "Categoría prueba",
+    "thumbnail": [],
+    "id": 13
+  }
+]

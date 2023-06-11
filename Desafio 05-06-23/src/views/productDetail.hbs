@@ -1,0 +1,25 @@
+<h1>Detalle del producto</h1>
+<hr>
+<div>
+    <input type="text" placeholder="Ingresa tu Carrito" id="cartIdShopDetail" />
+</div>
+<br/>
+<hr>
+<div>
+<ul>
+<li>_id: {{_id}}</li>
+<li>title: {{title}}</li>
+<li>description: {{description}}</li>
+<li>code: {{code}}</li>
+<li>price: ${{price}}</li>
+<li>status: {{status}}</li>
+<li>stock: {{stock}}</li>
+<li>category: {{category}}</li>
+</ul>
+<button onclick="addToCart(`{{this._id}}`)">Agregar al carrito</button>
+</div>
+
+
+
+
+<script src="/js/productdetail.js"></script>
