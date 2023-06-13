@@ -79,8 +79,7 @@ router.get("/products",async(req,res)=>{
                 sort:{price:sortValue},
                 lean:true
             });
-            const userData = req.user;
-/*             console.log("result",result); */
+            const userData = req.user; 
             const response ={
                 status: "success",
                 payload:result.docs,
@@ -163,14 +162,9 @@ router.get("/products/:pid",async (req,res)=>{ //BUSQUEDA ID PARAMS MONGO
 router.get("/login", (req,res)=>{
     res.render("login");
 });
-
 //signup
 router.get("/signup", (req,res)=>{
     res.render("signup");
-});
-//Recuperar contraseña
-router.get("/forgot", (req,res)=>{
-    res.render("forgotPassword");
 });
 //profile
 router.get("/profile", (req,res)=>{

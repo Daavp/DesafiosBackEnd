@@ -27,34 +27,32 @@ router.get("/login-failed",(req,res)=>{
     res.send('<div>Hubo un error al iniciar sesión, <a href="/signup">Intente nuevamente</a></div>')
 
 });
+//Ruta para registro con GITHUB
+router.get("/github",passport.authenticate("githubSignup"));
+
+router.get("/githubCallback",
+    passport.authenticate("githubSignup",{
+        failureRedirect: "/api/sessions/signup-failed"
+    }),
+    (req,res)=>{
+        res.redirect("/products?page=1")
+    }
+)
+
+//Ruta LOGOUT 
 router.get("/logout",(req,res)=>{
     req.logOut(error=>{
         if(error){//elimina req.user y limpia session actual
             return res.send('No se pudo cerrar sesión <a href:"/profile"> ir al perfil </a>');
+        } else{
+            req.session.destroy(err=>{//Elimina session de la BD
+                if(err) return res.send('No se pudo cerrar sesión <a href:"/profile"> ir al perfil </a>');
+                res.redirect("/")
+            });
         }
     })
-    req.session.destroy(err=>{//Elimina session de la BD
-        if(err) {
-        return res.send('No se pudo cerrar sesión <a href:"/profile"> ir al perfil </a>');
-        }
-        res.redirect("/")
-    });
+
 });
-//Recuperar contraseña
-router.post("/forgot",async(req,res)=>{
-    try {
-        const {email,newPassword} = req.body;
-        const userDB = await userModel.findOne({email:email});
-        if(userDB){//usuario registrado
-            userDB.password = createHash(newPassword);
-            const userUpdate = await userModel.findByIdAndUpdate(userDB._id,userDB, {new:true});
-            res.send('<div> Cambio de contraseña completado con exito, inicie sesión con sus datos <a href="/login">Inicie sesión en la pagina de login</a></div>')
-        } else{
-            res.send('<div> Usuario no registrado <a href="/signup">Registrarse</a> o <a href="/forgot">Intentar nuevamente</a></div>') 
-        }
-    } catch (error) {
-        res.send('<div>Hubo un error al cambiar la contraseña, intenta nuevamente <a href="/forgot">Intente nuevamente</a></div>')
-    }
-})
+
 
 export {router as authRouter};
