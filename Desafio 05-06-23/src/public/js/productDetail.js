@@ -1,14 +1,16 @@
 console.log("js products");
 
-const cartId = document.getElementById("cartIdShopDetail");
-
- const addToCart = async(productId)=>{
-    if(!cartId.value){
-        return  console.log("No hay ID de carrito en el cuadro de carrito")
-    };
-        resp =await fetch(`http://localhost:8080/api/carts/${cartId.value}/product/${productId}`,{
-            method:'POST'
-        });
-        result = await resp.json();
-        console.log("Status: ",result.status,"Message: ",result.message);
-    }
+    const addToCart = async(productId)=>{
+        try {
+            const userLog = document.getElementById("cartId");
+            const cartId = userLog.innerText;
+            console.log(userLog.innerText);
+            resp =await fetch(`http://localhost:8080/api/carts/${cartId}/product/${productId}`,{
+                method:'POST'
+            });
+            result = await resp.json();
+            console.log("Status: ",result.status,"Message: ",result.message);
+        } catch (error) {
+            console.log("No hay sesión iniciada")
+        }
+        }

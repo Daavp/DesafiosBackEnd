@@ -2,6 +2,8 @@
 
 <p>Bienvenido {{first_name}}</p>
 <div id="role"></div>
+<button onclick="location.href='/carts/{{this.cart}}'" type="button">Ir a mi carrito</button>
+<br>
 <hr>
 <div>
 <h2>Mis datos</h2>
@@ -12,4 +14,7 @@ Apellido: {{last_name}}
 Correo electronico: {{email}}
 <br></br>
 </div>
+
 <a href="/api/sessions/logout">Cerrar sesión</a>
+
+

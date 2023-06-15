@@ -151,8 +151,17 @@ router.get("/products/:pid",async (req,res)=>{ //BUSQUEDA ID PARAMS MONGO
         if(!data){ //Si no lo encuentra da mensaje
             return res.send(`Producto con el id ${req.params.pid} no existe, intenta con otro ID.`)
         };
-        console.log("response",data);
-        res.render("productDetail",data);
+        const response = {
+            _id: data._id,
+            title: data.title,
+            description: data.description,
+            code: data.code,
+            price: data.price,
+            category:data.category,
+            userData:req.user
+          };
+        console.log("response",response);
+        res.render("productDetail",response);
     }
      catch (error) {
         res.status(500).send({status:"Error al obtener los productos"});

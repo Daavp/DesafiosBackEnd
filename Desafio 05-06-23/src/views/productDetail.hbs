@@ -1,10 +1,9 @@
 <h1>Detalle del producto</h1>
 <hr>
-<div>
-    <input type="text" placeholder="Ingresa tu Carrito" id="cartIdShopDetail" />
-</div>
-<br/>
-<hr>
+{{#if userData.cart}}
+<div id="cartId" hidden>{{userData.cart}}</div>
+{{/if}}
+
 <div>
 <ul>
 <li>_id: {{_id}}</li>
@@ -12,8 +11,6 @@
 <li>description: {{description}}</li>
 <li>code: {{code}}</li>
 <li>price: ${{price}}</li>
-<li>status: {{status}}</li>
-<li>stock: {{stock}}</li>
 <li>category: {{category}}</li>
 </ul>
 <button onclick="addToCart(`{{this._id}}`)">Agregar al carrito</button>
