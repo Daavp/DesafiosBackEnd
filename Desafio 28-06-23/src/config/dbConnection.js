@@ -1,6 +1,6 @@
 import mongoose, { connect } from "mongoose";
 
-import { options } from "./options.js";
+import { options } from "./config.js";
 
 export const connectDB = async()=>{
     try {

@@ -1,7 +1,7 @@
 import fs  from "fs";
 import path from "path";
 import { __dirname } from "../../utils.js";
-import { options } from "../../config/options.js";
+import { options } from "../../config/config.js";
 
  class ProductManager {
     constructor(pathName){

@@ -3,8 +3,8 @@ dotenv.config();
 
 export const options = {
     filesystem:{
-        products:"products.json",
-        carts:"carts.json"
+        products:process.env.FILE_PRODUCTS,
+        carts:process.env.FILE_CARTS
     },
     server:{
         port:process.env.PORT || 3000

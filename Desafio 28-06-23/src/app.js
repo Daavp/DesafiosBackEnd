@@ -12,7 +12,7 @@ import { __dirname } from "./utils.js"; //Ubicación __dirname
 import {Server} from "socket.io";
 import { viewsRouter } from "./routes/views.routes.js"; 
 import { productsModel } from "./models/products.model.js";
-import { options } from "./config/options.js";
+import { options } from "./config/config.js";
 
 //Routers
 import { routerProducts } from "./routes/products.routes.js";
@@ -33,7 +33,7 @@ const app = express();
 app.use(express.static(path.join(__dirname,"/public")));
 //Servidor HTTP
 const httpServer = app.listen(options.server.port,()=>console.log(`Server listening on port ${options.server.port}`));
-console.log(options);
+
 
 //Conexión a DB
 connectDB();

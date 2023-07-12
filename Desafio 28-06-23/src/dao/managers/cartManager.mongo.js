@@ -1,6 +1,6 @@
 import path from "path";
 import { __dirname } from "../../utils.js";
-import { options } from "../../config/options.js";
+import { options } from "../../config/config.js";
 import { cartsModel } from "../../models/carts.model.js";
 import { productsModel } from "../../models/products.model.js";
 
@@ -21,7 +21,6 @@ async addCart(){
         throw new Error(`Error al crear carrito en la BD ${error.message}`);
     }
 };
-
 /*     // getProductsByCartId  */
 async getCartById(id){
     try {
@@ -45,7 +44,6 @@ async getCarts(){
         throw new Error(`Error al obtener los carritos`);
     }
 };
-
 /*     // updateProduct  */
 async addProductToCart(cartId, productId){
 try {
@@ -120,6 +118,30 @@ async changeProductQuantity(cartId, productId, productQuantity){
             throw new Error(error.message);
         }
     };
+async addProductToCartArray(cartId,productId,productQuantity){
+    try {
+        const carts = await this.modelCarts.findById(cartId);
+        if(carts){
+            const productIndex = carts.products.findIndex(item=>item.product.id === productId);
+            console.log("productindex",productIndex);
+            // console.log("cart quantity ",carts.products[productIndex].quantity);
+            if(productIndex>=0){
+                throw new Error (`Producto ya existente en el carrito, error por intentar duplicar producto`)
+            } else{
+                const newCartProduct = {
+                    product:productId,
+                    quantity:productQuantity
+                };
+                carts.products.push(newCartProduct);
+                console.log(carts);
+                await this.modelCarts.findByIdAndUpdate(cartId,carts,{new:true});
+            }
+            return `Producto agregado al carrito`
+        };
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    };
 //Vaciar carrito
 async emptyCart(cartId){
     try {
@@ -139,30 +161,6 @@ async emptyCart(cartId){
             throw new Error(error.message);
         }
     };
-    async addProductToCartArray(cartId,productId,productQuantity){
-        try {
-            const carts = await this.modelCarts.findById(cartId);
-            if(carts){
-                const productIndex = carts.products.findIndex(item=>item.product.id === productId);
-                console.log("productindex",productIndex);
-               // console.log("cart quantity ",carts.products[productIndex].quantity);
-                if(productIndex>=0){
-                    throw new Error (`Producto ya existente en el carrito, error por intentar duplicar producto`)
-                } else{
-                    const newCartProduct = {
-                        product:productId,
-                        quantity:productQuantity
-                    };
-                    carts.products.push(newCartProduct);
-                    console.log(carts);
-                    await this.modelCarts.findByIdAndUpdate(cartId,carts,{new:true});
-                }
-                return `Producto agregado al carrito`
-            };
-            } catch (error) {
-                throw new Error(error.message);
-            }
-        };
 
 
 //Fin de la clase
