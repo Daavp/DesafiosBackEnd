@@ -1,16 +1,11 @@
 import mongoose, { Schema } from "mongoose";
-
 const ticketCollection = "tickets"; //nombre de la colleccion de la base de datos.
 
 //schema
 
 const ticketsSchema = new mongoose.Schema({
-    code:{
-        type:String,        required:true  //obligatorio
-    },
-    purchaseDatetime:{
-        type:String,        required:true  //obligatorio
-    },
+    code:{type:String,required:true},
+    purchaseDatetime:{type:String,required:true},
     products:{
         type:[{
             product:{
@@ -24,14 +19,10 @@ const ticketsSchema = new mongoose.Schema({
             }
         }],
         required:true,  //obligatorio
-        default:[]
+
     },
-    amount:{
-        type:Number, required:true
-    },
-    purchaser:{
-        type:String, required:true
-    }
+    amount:{type:Number, required:true},
+    purchaser:{type:String, required:true}
 });
 
 ticketsSchema.pre('findOne',function(){

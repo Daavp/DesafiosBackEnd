@@ -120,6 +120,7 @@ export const initializePassport = ()=>{ //Aqui van las estrategias
         const userDB = await UsersService.getUserById(id);
         const userData = new userDto(userDB);
         const transformUserDB = JSON.parse(JSON.stringify(userData));
+        console.log("Userdata pass", transformUserDB)
         done(null,transformUserDB); //req.user = userDB
     })
 

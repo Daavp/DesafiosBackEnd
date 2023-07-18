@@ -5,6 +5,7 @@ import session from "express-session";
 import mongoStore from "connect-mongo";
 import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
+import cors from "cors";
 
 import { __dirname } from "./utils.js"; //Ubicación __dirname
 import {Server} from "socket.io";
@@ -54,6 +55,7 @@ app.set('views', path.join(__dirname,"/views"));
 app.use(express.json()); //Interpretar POST JSON
 app.use(express.static(path.join(__dirname,"/public")))
 app.use(express.urlencoded({extended:true}));
+app.use(cors());
 //Routes products
 app.use("/api/products",routerProducts);
 //Routes carts

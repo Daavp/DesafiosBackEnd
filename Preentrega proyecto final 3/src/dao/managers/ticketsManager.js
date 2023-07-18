@@ -5,12 +5,12 @@ export class ticketsManager {
     constructor (){
         this.model = ticketsModel;
     }
-    async createTicket(product){
+    async createTicket(ticket){
         try {
-            const data = await this.model.create(product);
+            const data = await this.model.create(ticket);
             return data;
         } catch (error) {
-            throw new Error(`Error al crear el producto en la BD ${error.message}`);
+            throw new Error(`Error al crear el ticket ${error.message}`);
         } 
     };
 

@@ -144,7 +144,7 @@ export class ViewsController{
     };
     static async viewsProfile(req,res){
         if(req.user){
-            console.log(req.user);
+            console.log("requser profile",req.user);
            return res.render("profile",req.user);
         } else {
             res.redirect("/login")
