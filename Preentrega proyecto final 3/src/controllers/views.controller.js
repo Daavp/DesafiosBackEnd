@@ -2,6 +2,8 @@
 import { cartsService } from "../services/carts.service.js";
 import { ProductsService } from "../services/products.service.js";
 import { chatMongo } from "../dao/managers/chatMongo.js"; 
+import {v4 as uuidv4} from 'uuid';
+let myuuid = uuidv4();
 const chatService = new chatMongo();
 
 export class ViewsController{
@@ -144,10 +146,82 @@ export class ViewsController{
     };
     static async viewsProfile(req,res){
         if(req.user){
-            console.log("requser profile",req.user);
            return res.render("profile",req.user);
         } else {
             res.redirect("/login")
+        }
+    };
+    static async purchaseView(req,res){
+        try {
+            const cartId = req.params.cid;
+            const data = await cartsService.getCartById(cartId);
+            if (data){
+            console.log("Carrito existe");
+               const productsAproved =[];
+               const productsRejected =[];
+
+               for(let i=0;i<data.products.length;i++){
+                   const productIdCart = data.products[i];
+                   const productDB = await ProductsService.getProductById(data.products[i].product._id);
+
+                    if(productDB.stock>= productIdCart.quantity){
+                        productsAproved.push({
+                            productId:productIdCart.product._id,
+                            product:productIdCart.product.title,
+                            quantity:productIdCart.quantity,
+                            price:productDB.price
+                        });
+                        const newStock = parseInt(productDB.stock) - productIdCart.quantity;
+                        console.log(newStock);
+                    }
+                    if(productDB.stock< productIdCart.quantity){
+                        productsRejected.push({
+                            productId:productIdCart.product._id,
+                            product:productIdCart.product.title,
+                            stock:productDB.stock
+                        })};
+               };
+               var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = dd + '/' + mm + '/' + yyyy;
+
+               console.log("productsAproved ", productsAproved);
+               console.log("productsRejected ", productsRejected);
+
+               let totalAmount = productsAproved.reduce((acum,act) => acum + act.price,0);
+
+               console.log(totalAmount)
+
+               const ticketInfo = {
+                code:myuuid,
+                purchaseDatetime:today,
+                products:{
+                    productsAproved
+                },
+                amount:totalAmount,
+                purchaser:await req.body.email
+               };
+               const clientPageInfo ={
+                ...ticketInfo,
+                productsRejected:{
+                    productsRejected
+                }
+               };
+               console.log("data client info",clientPageInfo);
+               console.log("prodAp",productsAproved)
+
+               return res.render("purchase",clientPageInfo)
+            };
+            
+            
+
+        } catch (error) {
+            return res
+            .status(500)
+            .send({ status: 'Error al generar el ticket' });
         }
     };
 }

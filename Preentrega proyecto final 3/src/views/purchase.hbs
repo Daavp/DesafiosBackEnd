@@ -1,0 +1,30 @@
+<h1>¡Estas a un paso de terminar tu compra!</h1>
+<div>
+    Fecha de la compra: {{purchaseDatetime}} <br><br>
+</div>
+<hr>
+<h2>Resumen de la compra</h2>
+<div>
+    {{#each products.productsAproved}}
+    <div>
+        Producto: {{this.product}} <br>
+        Cantidad de producto en carrito: {{this.quantity}}<br></br>
+
+    </div>
+    {{/each}}
+    <hr>
+        Total a pagar: ${{amount}}.<br><br>
+
+</div>
+{{#if productsRejected.productsRejected}}
+<h2>No pudimos procesar estos productos</h2>
+<div>
+    {{#each productsRejected.productsRejected}}
+    <div>
+        Producto: {{this.product}} <br>
+
+    </div>
+    {{/each}}
+
+</div>
+{{/if}}
