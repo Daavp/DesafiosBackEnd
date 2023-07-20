@@ -19,5 +19,10 @@ Cantidad de producto en carrito: {{this.quantity}}<br></br>
     {{/each}}
 </div>
 
+{{#if cartProducts}}
 <button onclick="location.href='/carts/{{cartId}}/purchase'" type="button">Continuar con mi Compra</button>
+{{else}}
+<h2>No hay productos en el carrito</h2>
+{{/if}}
+
 <button onclick="location.href='/profile'" type="button">Volver a mi perfil</button>

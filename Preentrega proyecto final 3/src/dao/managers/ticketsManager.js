@@ -13,5 +13,16 @@ export class ticketsManager {
             throw new Error(`Error al crear el ticket ${error.message}`);
         } 
     };
+    async getUserTickets(user){
+        try {
+            const result = await this.model.find({purchaser:user});
+            const data = JSON.parse(JSON.stringify(result));
+            return data;
+        } catch (error) {
+            throw new Error(`Error al obtener ordenes ${error.message}`);
+        } 
+    };
+
+    
 
 };

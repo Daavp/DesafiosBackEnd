@@ -78,7 +78,8 @@ async deleteProductFromCart(cartId, productId){
     try {
         const carts = await this.modelCarts.findById(cartId);        
         if(carts){
-            const productIndex = carts.products.findIndex(item=>item.product.id === productId);
+            const lookId = JSON.parse(JSON.stringify(productId));
+            const productIndex = carts.products.findIndex(item=>item.product.id === lookId);
            // console.log("cart quantity ",carts.products[productIndex].quantity);
             if(productIndex>=0){
                 await carts.products.splice(productIndex,1);
@@ -161,7 +162,5 @@ async emptyCart(cartId){
             throw new Error(error.message);
         }
     };
-
-
 //Fin de la clase
 }

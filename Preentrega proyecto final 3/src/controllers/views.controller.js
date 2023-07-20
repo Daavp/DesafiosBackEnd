@@ -1,9 +1,11 @@
 //importar servicio de productos
 import { cartsService } from "../services/carts.service.js";
 import { ProductsService } from "../services/products.service.js";
+import { ticketsService } from "../services/tickets.service.js";
 import { chatMongo } from "../dao/managers/chatMongo.js"; 
 import {v4 as uuidv4} from 'uuid';
-let myuuid = uuidv4();
+import { response } from "express";
+
 const chatService = new chatMongo();
 
 export class ViewsController{
@@ -169,7 +171,70 @@ export class ViewsController{
                             productId:productIdCart.product._id,
                             product:productIdCart.product.title,
                             quantity:productIdCart.quantity,
-                            price:productDB.price
+                            price:productDB.price,
+                            pricexquantity:productDB.price*productIdCart.quantity
+                        });
+                        const newStock = parseInt(productDB.stock) - productIdCart.quantity;
+                        console.log(newStock);
+                    }
+                    if(productDB.stock< productIdCart.quantity){
+                        productsRejected.push({
+                            productId:productIdCart.product._id,
+                            product:productIdCart.product.title,
+                            stock:productDB.stock
+                        })};
+               };
+
+               console.log("productsAproved ", productsAproved);
+               console.log("productsRejected ", productsRejected);
+
+               let totalAmount = productsAproved.reduce((acum,act) => acum + act.pricexquantity,0);
+
+               const clientPageInfo ={
+                myCart:cartId,
+                products:{
+                    productsAproved
+                },
+                amount:totalAmount,
+                productsRejected:{
+                    productsRejected
+                }
+               };
+               console.log("data client info",clientPageInfo);
+               console.log("prodAp",productsAproved.length)
+
+               return res.render("purchase",clientPageInfo)
+            };
+            
+            
+
+        } catch (error) {
+            return res
+            .status(500)
+            .send({ message: 'Error al generar el ticket' });
+        }
+    };
+    static async purchaseConfirmationView(req,res){
+        try {
+            let myuuid = uuidv4();
+            const cartId = req.params.cid;
+            const data = await cartsService.getCartById(cartId);
+            if (data){
+            console.log("Carrito existe");
+               const productsAproved =[];
+               const productsRejected =[];
+
+               for(let i=0;i<data.products.length;i++){
+                   const productIdCart = data.products[i];
+                   const productDB = await ProductsService.getProductById(data.products[i].product._id);
+
+                    if(productDB.stock>= productIdCart.quantity){
+                        productsAproved.push({
+                            productId:productIdCart.product._id,
+                            product:productIdCart.product.title,
+                            quantity:productIdCart.quantity,
+                            price:productDB.price,
+                            pricexquantity:productDB.price*productIdCart.quantity
                         });
                         const newStock = parseInt(productDB.stock) - productIdCart.quantity;
                         console.log(newStock);
@@ -188,10 +253,7 @@ export class ViewsController{
 
                 today = dd + '/' + mm + '/' + yyyy;
 
-               console.log("productsAproved ", productsAproved);
-               console.log("productsRejected ", productsRejected);
-
-               let totalAmount = productsAproved.reduce((acum,act) => acum + act.price,0);
+                let totalAmount = productsAproved.reduce((acum,act) => acum + act.pricexquantity,0);
 
                console.log(totalAmount)
 
@@ -202,18 +264,34 @@ export class ViewsController{
                     productsAproved
                 },
                 amount:totalAmount,
-                purchaser:await req.body.email
+                purchaser:await req.user.email
                };
                const clientPageInfo ={
+                myCart:cartId,
                 ...ticketInfo,
                 productsRejected:{
                     productsRejected
                 }
                };
                console.log("data client info",clientPageInfo);
-               console.log("prodAp",productsAproved)
+               console.log("requser",req.user);
+               console.log("prodAp",productsAproved);
 
-               return res.render("purchase",clientPageInfo)
+               const orderConfirmed = await ticketsService.createTicket(ticketInfo);
+               console.log("OrderConfirmed ",orderConfirmed);
+
+               //Borrar productos aprobados del carrito
+               for(let i=0;i<productsAproved.length;i++){
+                const productIdCart = productsAproved[i];
+               // console.log("borrando productos", await ProductsService.getProductById(productIdCart.productId));
+
+                const productDB = await cartsService.deleteProductFromCart(cartId,productIdCart.productId);
+                console.log("FuncDelete", productDB);
+
+
+            };
+                //Render
+               return res.render("purchaseConfirmation",clientPageInfo)
             };
             
             
@@ -221,7 +299,21 @@ export class ViewsController{
         } catch (error) {
             return res
             .status(500)
-            .send({ status: 'Error al generar el ticket' });
+            .send({ message:error.message });
         }
     };
+    static async getUserTickets(req,res){
+        try {
+            const data = await ticketsService.getUserTickets(req.user.email);
+            if(!data){ //Si no lo encuentra da mensaje
+                return res.send(`Aun no tienes ordenes ingresadas`)
+            };
+            const response = {ticket:data};
+            console.log("response",response);
+            res.render("userTickets",response);//Si lo encuentra entrega el producto
+        }
+         catch (error) {
+            res.status(500).send({status:"Error al obtener datos"});
+        }
+};
 }

@@ -17,12 +17,15 @@ router.get('/carts/:cid', UserAuthviews,checkRoles(["user"]) , ViewsController.v
 
 router.get("/products/:pid", ViewsController.viewsProductById);
 //login
-router.get("/login",UserAuthviews,ViewsController.viewsLogin);
+router.get("/login",ViewsController.viewsLogin);
 //signup
 router.get("/signup",UserAuthviews, ViewsController.viewsSignup);
 //profile
 router.get("/profile",  ViewsController.viewsProfile);
 //TicketPurchase
 router.get("/carts/:cid/purchase",  ViewsController.purchaseView);
-
+//TicketPurchase
+router.get("/carts/:cid/purchaseConfirmation",  ViewsController.purchaseConfirmationView);
+//userTickets
+router.get("/userTickets",  ViewsController.getUserTickets);
 export {router as viewsRouter};
