@@ -1,0 +1,27 @@
+<h1>Productos en tiempo real</h1>
+<h2>Crear registro</h2>
+<input type="text" id="titleProduct" placeholder="title"/>
+<input type="text" id="descriptionProduct" placeholder="description"/>
+
+<input type="number" id="priceProduct" placeholder="price"/>
+
+<input type="number" id="stockProduct" placeholder="stock"/>
+
+<input type="text" id="categoryProduct" placeholder="category"/>
+
+<input type="text" id="thumbnailProduct" placeholder="thumbnail"/>
+<br>
+<button id="createButton">Crear registro</button>
+<br>
+<br>
+<h2>Borrar registro</h2>
+<input type="number" id="idProducto" placeholder="Id del producto a borrar"/>
+<br>
+<button id="createButton">Borrar registro</button>
+<h2>Todos los productos</h2>
+<div id="allProducts"></div>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="js/realTimeProducts.js"></script>
+
+
