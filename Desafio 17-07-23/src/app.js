@@ -18,7 +18,7 @@ import { authRouter } from "./routes/auth.routes.js";
 import { productManagerDb } from "./dao/managers/productManager.mongo.js";
 import { chatMongo } from "./dao/managers/chatMongo.js";
 import { mockingproductsRouter } from "./routes/mockingproducts.routes.js";
-
+import { errorHandler } from "./middlewares/errorHandler.js";
 //const manager = new ProductManager("products.json"); FS
 const manager = new productManagerDb();
 const chatService = new chatMongo();
@@ -57,6 +57,7 @@ app.use(express.json()); //Interpretar POST JSON
 app.use(express.static(path.join(__dirname,"/public")))
 app.use(express.urlencoded({extended:true}));
 app.use(cors());
+app.use(errorHandler);
 //Routes products
 app.use("/api/products",routerProducts);
 //Routes carts

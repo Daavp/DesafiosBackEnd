@@ -5,6 +5,10 @@ import { ticketsService } from "../services/tickets.service.js";
 import { chatMongo } from "../dao/managers/chatMongo.js"; 
 import {v4 as uuidv4} from 'uuid';
 import { response } from "express";
+import { customError } from "../services/errors/customErrors.service.js";//Estructura
+import { EError } from "../middlewares/EError.js";//Codigo o tipos de errores
+import { generateUserErrorInfo } from "../services/errors/userErrorInfo.service.js";//Mensaje personalizado
+
 
 const chatService = new chatMongo();
 
@@ -18,8 +22,15 @@ export class ViewsController{
               }; 
             res.render('home',response); //Aqui mostrar todos los productos del archivo
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send({status:"Error al obtener los productos"});
+/*             console.log(error.message); */
+            res.status(500).send({status:
+                customError.createError({
+                    name:"Error al obtener los productos",
+                    cause:generateUserErrorInfo.errorGettingProducts(),
+                    message:"Error al obtener los productos",
+                    errorCode:EError.INVALID_PRODUCT_ID
+                })
+            }); 
         }
     };
     static async viewsRealTimeProducts(req,res){
@@ -27,7 +38,14 @@ export class ViewsController{
             const allProducts = await ProductsService.getAllProducts();
             res.render("realTimeProducts",{allProducts}); //Aqui mostrar todos los productos del archivo
         } catch (error) {
-            res.status(500).send({status:"Error al obtener los productos"});
+            res.status(500).send({status:
+                customError.createError({
+                    name:"Error al obtener los productos",
+                    cause:generateUserErrorInfo.errorGettingProducts(),
+                    message:"Error al obtener los productos",
+                    errorCode:EError.INVALID_PRODUCT_ID
+                })
+            }); 
         }
     };
     static async viewsChat(req,res){
@@ -89,7 +107,14 @@ export class ViewsController{
                  console.log("response usuario",response.userData); 
                 res.render("products",response);
         } catch (error) {
-            return res.status(500).send({status:"Error al obtener los productos"});
+            return res.status(500).send({status:
+                customError.createError({
+                    name:"Error al obtener los productos",
+                    cause:generateUserErrorInfo.errorGettingProducts(),
+                    message:"Error al obtener los productos",
+                    errorCode:EError.INVALID_PRODUCT_ID
+                })
+            }); 
         }
     };
     static async viewsCartById(req,res){
@@ -115,7 +140,14 @@ export class ViewsController{
             } catch (error) {
               return res
                 .status(500)
-                .send({ status: 'Error al obtener los productos del carrito BD' });
+                .send({status:
+                    customError.createError({
+                        name:"No se pudo obtener los carritos",
+                        cause:generateUserErrorInfo.errorGettingProducts(),
+                        message:"Error al obtener los carritos",
+                        errorCode:EError.INVALID_CART_ID
+                    })
+                });
             }
     };
     static async viewsProductById(req,res){
@@ -137,7 +169,14 @@ export class ViewsController{
             res.render("productDetail",response);
         }
          catch (error) {
-            res.status(500).send({status:"Error al obtener los productos"});
+            res.status(500).send({status:
+                customError.createError({
+                    name:"Error al obtener los producto",
+                    cause:generateUserErrorInfo.errorIdProducts(),
+                    message:"Hubo un error al obtener el producto",
+                    errorCode:EError.INVALID_PRODUCT_ID
+                })
+            });
         }
     };
     static async viewsLogin(req,res){
@@ -211,7 +250,14 @@ export class ViewsController{
         } catch (error) {
             return res
             .status(500)
-            .send({ message: 'Error al generar el ticket' });
+            .send({status:
+                customError.createError({
+                    name:"No se pudo completar la compra de carrito",
+                    cause:generateUserErrorInfo.errorPurchase(),
+                    message:"Error al generar el ticket",
+                    errorCode:EError.TIMEOUT_PURCHASE
+                })
+            });
         }
     };
     static async purchaseConfirmationView(req,res){
@@ -299,7 +345,14 @@ export class ViewsController{
         } catch (error) {
             return res
             .status(500)
-            .send({ message:error.message });
+            .send({status:
+                customError.createError({
+                    name:"No se pudo completar la compra de carrito",
+                    cause:generateUserErrorInfo.errorPurchase(),
+                    message:"Error al generar el ticket",
+                    errorCode:EError.TIMEOUT_PURCHASE
+                })
+            });
         }
     };
     static async getUserTickets(req,res){
@@ -313,7 +366,14 @@ export class ViewsController{
             res.render("userTickets",response);//Si lo encuentra entrega el producto
         }
          catch (error) {
-            res.status(500).send({status:"Error al obtener datos"});
+            res.status(500).send({status:
+                customError.createError({
+                    name:"No se pudo obtener los tickets",
+                    cause:generateUserErrorInfo.errorGettingProducts(),
+                    message:"Error al obtener tickets",
+                    errorCode:EError.DATABASE_ERROR
+                })
+            });
         }
 };
 }

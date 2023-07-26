@@ -3,6 +3,10 @@ import { cartsService } from "../services/carts.service.js";
 import { connectDB } from "../config/dbConnection.js";
 import { ProductsService } from "../services/products.service.js"; 
 import { ticketsService } from "../services/tickets.service.js";
+import { customError } from "../services/errors/customErrors.service.js";//Estructura
+import { EError } from "../middlewares/EError.js";//Codigo o tipos de errores
+import { generateUserErrorInfo } from "../services/errors/userErrorInfo.service.js";//Mensaje personalizado
+
 import {v4 as uuidv4} from 'uuid';
 let myuuid = uuidv4();
 
@@ -17,7 +21,14 @@ export class CartsController{
             }
             
         } catch (error) {
-            res.status(500).json({status:"error", message:error.message});
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo obtener los carritos",
+                    cause:generateUserErrorInfo.errorGettingProducts(),
+                    message:"Error al obtener los carritos",
+                    errorCode:EError.INVALID_CART_ID
+                })
+            }); 
         }
     };
     static async addCart(req,res){
@@ -25,7 +36,14 @@ export class CartsController{
             const cartCreated = await cartsService.addCart();
             res.json({status:"success", data:cartCreated }); //Mensaje de exito de carrito creado
         } catch (error) {
-            res.status(500).send({status:"error", message:error.message});
+            res.status(500).send({status:
+                customError.createError({
+                    name:"No se pudo crear carrito",
+                    cause:generateUserErrorInfo.errorAddCart(),
+                    message:"Error al crear carrito",
+                    errorCode:EError.INVALID_CART_UPDATE
+                })
+            }); 
         }
     };
     static async getCartById(req,res){
@@ -39,7 +57,14 @@ export class CartsController{
             }
             
         } catch (error) {
-            res.status(500).json({status:"error", message:error.message});
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo obtener carrito",
+                    cause:generateUserErrorInfo.errorGettingCarts(),
+                    message:"Error al obtener los carrito",
+                    errorCode:EError.INVALID_CART_ID
+                })
+            }); 
         }
     };
     static async addProductToCart(req,res){
@@ -61,7 +86,14 @@ export class CartsController{
             }
             
         } catch (error) {
-            res.status(500).json({status:"error", message:error.message});
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo agregar producto a carrito",
+                    cause:generateUserErrorInfo.errorUpdateCart(),
+                    message:"Error al agregar producto a carrito",
+                    errorCode:EError.INVALID_CART_UPDATE
+                })
+            }); 
         }
     };
     static async deleteProductFromCart(req,res){
@@ -83,7 +115,14 @@ export class CartsController{
             }
             
         } catch (error) {
-            res.status(500).json({status:"error", message:error.message});
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo eliminar producto a carrito",
+                    cause:generateUserErrorInfo.errorUpdateCart(),
+                    message:"Error al eliminar producto a carrito",
+                    errorCode:EError.INVALID_CART_UPDATE
+                })
+            });
         }
     };
     static async addProductToCartArray(req,res){
@@ -105,7 +144,14 @@ export class CartsController{
                 res.status(400).json({status:"error", message:"Carrito no existe"});
             }
         } catch (error) {
-            res.status(500).json({status:"error", message:error.message});
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo agregar productos a carrito",
+                    cause:generateUserErrorInfo.errorUpdateCart(),
+                    message:"Error al agregar productos a carrito",
+                    errorCode:EError.INVALID_CART_UPDATE
+                })
+            });
         }
     };
     static async changeProductQuantity(req,res){
@@ -128,7 +174,14 @@ export class CartsController{
             }
             
         } catch (error) {
-            res.status(500).json({status:"error", message:error.message});
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo modificar producto de carrito",
+                    cause:generateUserErrorInfo.errorUpdateCart(),
+                    message:"Error al modificar producto de carrito",
+                    errorCode:EError.INVALID_CART_UPDATE
+                })
+            });
         }
     };
     static async emptyCart(req,res){
@@ -144,7 +197,14 @@ export class CartsController{
             }
             
         } catch (error) {
-            res.status(500).json({status:"error", message:error.message});
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo vaciar carrito",
+                    cause:generateUserErrorInfo.errorEmptyCart(),
+                    message:"Error al vaciar carrito",
+                    errorCode:EError.INVALID_CART_UPDATE
+                })
+            });
         }
     };
     static async purchase(req,res){
@@ -206,7 +266,14 @@ export class CartsController{
             
 
         } catch (error) {
-            
+            res.status(500).json({status:
+                customError.createError({
+                    name:"No se pudo completar la compra de carrito",
+                    cause:generateUserErrorInfo.errorPurchase(),
+                    message:"Error al completar la compra de carrito",
+                    errorCode:EError.TIMEOUT_PURCHASE
+                })
+            });  
         }
     };
 }

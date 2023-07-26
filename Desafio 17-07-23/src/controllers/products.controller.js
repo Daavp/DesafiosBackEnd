@@ -1,5 +1,8 @@
 //importar servicio de productos
 import { ProductsService } from "../services/products.service.js";
+import { customError } from "../services/errors/customErrors.service.js";//Estructura
+import { EError } from "../middlewares/EError.js";//Codigo o tipos de errores
+import { generateUserErrorInfo } from "../services/errors/userErrorInfo.service.js";//Mensaje personalizado
 
 export class ProductsController{
     static async getProducts(req,res){
@@ -50,7 +53,14 @@ export class ProductsController{
                     res.json(response);
         
             } catch (error) {
-                res.status(500).send({status:"Error al obtener los productos"});
+                res.status(500).send({status:
+                    customError.createError({
+                        name:"Error al obtener los productos",
+                        cause:generateUserErrorInfo.errorGettingProducts(),
+                        message:"Error al obtener los productos",
+                        errorCode:EError.INVALID_PRODUCT_ID
+                    })
+                }); 
             }
     };
     static async getProductById(req,res){
@@ -62,7 +72,14 @@ export class ProductsController{
                 res.send(data);//Si lo encuentra entrega el producto
             }
              catch (error) {
-                res.status(500).send({status:"Error al obtener los productos"});
+                res.status(500).send({status:
+                    customError.createError({
+                        name:"Error al obtener los producto",
+                        cause:generateUserErrorInfo.errorIdProducts(),
+                        message:"Hubo un error al obtener el producto",
+                        errorCode:EError.INVALID_PRODUCT_ID
+                    })
+                });                
             }
     };
     static async updateProduct(req,res){
@@ -70,14 +87,28 @@ export class ProductsController{
             const productId = req.params.pid;
             const updateData = req.body;
             if(updateData._id != productId){
-                return res.status(400).send({status:"No puedes modificar o eliminar el id de productos ya existentesen la DB"});
+                return res.status(400).send({status:
+                    customError.createError({
+                        name:"Error al actualizar producto",
+                        cause:generateUserErrorInfo.errorUpdateProducts(),
+                        message:"No puedes modificar o eliminar el id de productos ya existentesen la DB",
+                        errorCode:EError.INVALID_PRODUCT_UPDATE
+                    })
+                });
             };
             console.log("Podemos buscar para modificar");
             const updateProduct = await ProductsService.updateProduct(productId,updateData);
             return res.json({status:"success",message:"Producto modificado con exito",data:updateProduct});//Producto modificado
         }
             catch (error) {
-            return res.status(500).send({message:error.message});
+            return res.status(500).send({status:
+                customError.createError({
+                    name:"Error al actualizar producto",
+                    cause:generateUserErrorInfo.errorUpdateProducts(),
+                    message:"Ha habido un problema al actualizar el producto en la base de datos, revisa los datos ingresados",
+                    errorCode:EError.INVALID_PRODUCT_UPDATE
+                })
+            });
         }
     };
     static async deleteProduct(req,res){
@@ -88,7 +119,14 @@ export class ProductsController{
             return res.json({status:"success",message:`Producto con id:${idProduct} eliminado.`});//Producto eliminado
         }
          catch (error) {
-            return res.status(500).send({message:error.message});
+            return res.status(500).send({status:
+                    customError.createError({
+                    name:"Error al eliminar el producto",
+                    cause:generateUserErrorInfo.errorDeleteProducts(),
+                    message:"Ha habido un problema al eliminar el producto en la base de datos, revisa los datos ingresados",
+                    errorCode:EError.INVALID_PRODUCT_UPDATE
+                })
+            });
         }
     };
     static async addProduct(req,res){
@@ -98,7 +136,14 @@ export class ProductsController{
             const productSaved = await ProductsService.addProduct(newProduct);
             res.json({status:"success", message:"Producto creado", data:productSaved}); //Mensaje de exito de producto creado
         } catch (error) {
-            return res.status(500).send({message:error.message});
+            return res.status(500).send({status:
+                customError.createError({
+                name:"Error al agregar el producto",
+                cause:generateUserErrorInfo.errorAddProducts(),
+                message:"Ha habido un problema al agregar el producto en la base de datos, revisa los datos ingresados",
+                errorCode:EError.INVALID_PRODUCT_UPDATE
+            })
+        });
         }
     };
 }
