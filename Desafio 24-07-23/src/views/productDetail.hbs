@@ -1,0 +1,22 @@
+<h1>Detalle del producto</h1>
+<hr>
+{{#if userData.cart}}
+<div id="cartId" hidden>{{userData.cart}}</div>
+{{/if}}
+
+<div>
+<ul>
+<li>_id: {{_id}}</li>
+<li>title: {{title}}</li>
+<li>description: {{description}}</li>
+<li>code: {{code}}</li>
+<li>price: ${{price}}</li>
+<li>category: {{category}}</li>
+</ul>
+<button onclick="addToCart(`{{this._id}}`)">Agregar al carrito</button>
+</div>
+
+
+
+
+<script src="/js/productdetail.js"></script>

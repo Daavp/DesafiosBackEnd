@@ -1,0 +1,13 @@
+<h1>Estas son tus ordenes realizadas</h1>
+<hr>
+    {{#each ticket}}
+    <div>
+        Numero de orden: {{this.code}} <br>
+        Fecha de compra: {{this.purchaseDatetime}} <br>
+        Monto total de la compra: ${{this.amount}}
+        <br>
+    </div>
+    <hr>
+    {{/each}}
+<br>
+    <button onclick="location.href='/profile'" type="button">Volver a mi perfil</button>

@@ -1,0 +1,23 @@
+<h1>¡Gracias por tu compra!</h1>
+
+<div>
+    <h2>Este es el detalle de tu pedido</h2>
+    Fecha de la compra: {{purchaseDatetime}} <br>
+    Numero de orden: {{code}}<br>
+</div>
+<hr>
+<h2>Resumen de la compra</h2>
+<div>
+    {{#each products.productsAproved}}
+    <div>
+        Producto: {{this.product}} x {{this.quantity}}<br>
+        Precio unitario:{{this.price}} <br></br>
+
+    </div>
+    {{/each}}
+    <hr>
+        Total a pagar: ${{amount}}.<br><br>
+
+</div>
+
+<button onclick="location.href='/profile'" type="button">Ir a mi perfil</button>
