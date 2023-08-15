@@ -17,4 +17,5 @@ export class UsersService{
     static async updateUser(userId,newInfo){
         return usersDao.updateUser(userId,newInfo);
     };
+    
 }

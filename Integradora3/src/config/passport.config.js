@@ -19,6 +19,7 @@ export const initializePassport = ()=>{ //Aqui van las estrategias
         async(req, username, password, done)=>{
             const userSignupForm = req.body;
             const user = await UsersService.getUserByEmail(username);//1:33
+            console.log("Intentando registrar");
             try {
                 if(!user){//Si no encuentra, registrar al usuario
                     if(userSignupForm.email.endsWith('@coder.com')){//verificacion coder

@@ -31,4 +31,7 @@ router.get("/logout",SessionsController.logoutStrategy);
 router.post("/forgot-password",SessionsController.sendRecovery);
 //Ruta para cambiar contraseña
 router.post("/reset-password", SessionsController.resetPassword)
+
+
+//Exportacion
 export {router as authRouter};

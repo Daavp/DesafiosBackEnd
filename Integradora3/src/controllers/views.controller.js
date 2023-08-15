@@ -105,7 +105,7 @@ export class ViewsController{
     
                 };
                 
-                 logger.error("response usuario Productos",response.userData);
+                 logger.debug("response usuario Productos",response.userData);
                 res.render("products",response);
         } catch (error) {
             return res.status(500).send({status:

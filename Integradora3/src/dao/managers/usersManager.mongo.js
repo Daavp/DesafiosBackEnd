@@ -10,7 +10,7 @@ export class UsersMongo{
             if(user){
                 return JSON.parse(JSON.stringify(user));
             } else{
-                throw new Error("El usuario no existe");
+                "El usuario no existe";
             }
         } catch (error) {
             throw error;

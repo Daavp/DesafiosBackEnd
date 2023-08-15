@@ -15,7 +15,7 @@ router.get("/:cid",CartsController.getCartById);
     //debe agregar el producto al arreglo products del carrito seleccionado
         //product:debe contener ID del producto solamente. quantity: debe contener numero de ejemplares del producto, se agregará uno a uno. Si ya existe producto se debe agregar
         //al producto  e incrementar el campo quantity del producto.    
-router.post("/:cid/product/:pid",UserAuthviews,checkRoles(["user"]),CartsController.addProductToCart);
+router.post("/:cid/product/:pid",UserAuthviews,checkRoles(["user","premium"]),CartsController.addProductToCart);
 // DELETE api/carts/:cid/products/:pid deberá eliminar del carrito el producto seleccionado.
 router.delete("/:cid/products/:pid",CartsController.deleteProductFromCart);
 //PUT api/carts/:cid deberá actualizar el carrito con un arreglo de productos con el formato especificado arriba.

@@ -2,6 +2,7 @@
 import { cartsService } from "../services/carts.service.js";
 import { connectDB } from "../config/dbConnection.js";
 import { ProductsService } from "../services/products.service.js"; 
+import { UsersService } from "../services/users.service.js";
 import { ticketsService } from "../services/tickets.service.js";
 import { customError } from "../services/errors/customErrors.service.js";//Estructura
 import { EError } from "../middlewares/EError.js";//Codigo o tipos de errores
@@ -71,10 +72,17 @@ export class CartsController{
         try {
             const cartId = req.params.cid;
             const productId = req.params.pid;
+            const userId = await UsersService.getUserByEmail(req.user.email);
             const cart= await cartsService.getCartById(cartId);
+
             if(cart){
                 const product = await ProductsService.getProductById(productId);
+                console.log("userId ", userId._id, "product owner ", product.owner)
                 if(product){
+                    if(product.owner === userId._id){
+                         return console.log("Producto corresponde a uno generado por el usuario, no es posible agregarlo a carrito")
+                    };
+                    console.log("Producto agregado al carrito")
                     const response = await cartsService.addProductToCart(cartId,productId);
                     connectDB();
                     res.json({status:"success",message:response});

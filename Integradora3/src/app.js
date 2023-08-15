@@ -12,6 +12,8 @@ import { __dirname } from "./utils.js"; //Ubicación __dirname
 import {Server} from "socket.io";
 import { viewsRouter } from "./routes/views.routes.js"; 
 import { options } from "./config/config.js";
+import { userRouter } from "./routes/users.routes.js";
+
 //Routers
 import { routerProducts } from "./routes/products.routes.js";
 import { routerCart } from "./routes/cart.routes.js";
@@ -70,6 +72,8 @@ app.use("/",viewsRouter);
 app.use("/api/sessions", authRouter);
 //Mocking products
 app.use("/mockingproducts",mockingproductsRouter);
+//Routes users
+app.use("/api/users",userRouter);
 
 socketServer.on("connection", async (socket)=>{
     // console.log(`nuevo socket cliente conectado ${socket.id}`);

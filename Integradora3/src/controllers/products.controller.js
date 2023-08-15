@@ -1,5 +1,6 @@
 //importar servicio de productos
 import { ProductsService } from "../services/products.service.js";
+import { UsersService } from "../services/users.service.js";
 import { customError } from "../services/errors/customErrors.service.js";//Estructura
 import { EError } from "../middlewares/EError.js";//Codigo o tipos de errores
 import { generateUserErrorInfo } from "../services/errors/userErrorInfo.service.js";//Mensaje personalizado
@@ -113,10 +114,17 @@ export class ProductsController{
     };
     static async deleteProduct(req,res){
         try {
-            console.log("Podemos eliminar");
             const idProduct = req.params.pid;
-            const deleteProduct = await ProductsService.deleteProduct(idProduct);
-            return res.json({status:"success",message:`Producto con id:${idProduct} eliminado.`});//Producto eliminado
+            const userId = await UsersService.getUserByEmail(req.user.email);
+            const product = await ProductsService.getProductById(idProduct);
+            console.log("userID ",userId._id, "productid ", idProduct);
+            //Validación user premium // === Compara valor y tipo de dato // == solo valor
+            if(req.user.role === "premium" && product.owner == userId._id || req.user.role === "admin"){
+                const deleteProduct = await ProductsService.deleteProduct(idProduct);
+                return res.json({status:"success",message:`Producto con id:${idProduct} eliminado.`});//Producto eliminado
+            }   else{
+                return res.json({status:"Error",message:`No tienes permisos para eliminar el producto con id:${idProduct} o ya no existe.`});
+            }         
         }
          catch (error) {
             return res.status(500).send({status:
@@ -132,7 +140,11 @@ export class ProductsController{
     static async addProduct(req,res){
         try {
             const {title,description,code,price,status,stock,category,thumbnails} = req.body;
-            const newProduct = req.body;
+            const userId = await UsersService.getUserByEmail(req.user.email);
+            const newProduct = {
+                ...req.body,
+                owner: userId._id
+            };
             const productSaved = await ProductsService.addProduct(newProduct);
             res.json({status:"success", message:"Producto creado", data:productSaved}); //Mensaje de exito de producto creado
         } catch (error) {
@@ -140,7 +152,7 @@ export class ProductsController{
                 customError.createError({
                 name:"Error al agregar el producto",
                 cause:generateUserErrorInfo.errorAddProducts(),
-                message:"Ha habido un problema al agregar el producto en la base de datos, revisa los datos ingresados",
+                message:"Ha habido un problema al agregar el producto en la base de datos, revisa los datos ingresados o tener los permisos",
                 errorCode:EError.INVALID_PRODUCT_UPDATE
             })
         });
