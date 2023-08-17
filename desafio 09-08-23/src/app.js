@@ -7,6 +7,8 @@ import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
 import cors from "cors";
 import { logger } from "./utils/logger.js";
+import { swaggerSpecs } from "./config/swaggerConfig.js";
+import swaggerUI from "swagger-ui-express";
 
 import { __dirname } from "./utils.js"; //Ubicación __dirname
 import {Server} from "socket.io";
@@ -74,6 +76,8 @@ app.use("/api/sessions", authRouter);
 app.use("/mockingproducts",mockingproductsRouter);
 //Routes users
 app.use("/api/users",userRouter);
+//Ruta donde se va a ver la documentación de endpoints
+app.use("/documentation",swaggerUI.serve,swaggerUI.setup(swaggerSpecs));
 
 socketServer.on("connection", async (socket)=>{
     // console.log(`nuevo socket cliente conectado ${socket.id}`);

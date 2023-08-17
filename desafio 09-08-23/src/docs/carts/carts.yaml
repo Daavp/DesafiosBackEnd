@@ -1,0 +1,243 @@
+paths:
+  /api/carts/getCarts:
+    get:
+      summary: Ruta para obtener carritos
+      tags:
+        - Carritos
+      responses:
+        "200":
+          description: Los carritos se obtuvieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        "500":
+          description: Hubo un error interno del servidor
+  /api/carts/:
+      post:
+        summary: Ruta para crear carrito
+        tags:
+          - Carritos
+        responses:
+          "200":
+            description: Carrito creado con exito
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor
+  /api/carts/{cid}:
+      get:
+        summary: Ruta para obtener carrito por ID
+        tags:
+          - Carritos
+          
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: id de carrito a consultar/modificar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Carrito obtenido
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor
+      put:
+        summary: Ruta para actualizar carrito con arreglo de productos
+        tags:
+          - Carritos
+                  
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: id de carrito a consultar/modificar
+            schema:
+              $type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/UpdateCart'
+        responses:
+          "200":
+            description: Productos modificados con exito
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor 
+            
+      delete:
+        summary: Ruta para vaciar carrito
+        tags:
+          - Carritos
+                
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: ID de carrito a consultar/modificar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Carrito vaciado con exito
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor
+  /api/carts/{cid}/product/{pid}:
+      post:
+        summary: Ruta para agregar producto a carrito
+        tags:
+          - Carritos
+          
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: ID de carrito a consultar/modificar
+            schema:
+              $type: string
+          - name: pid
+            in: path
+            required: true
+            description: ID de producto que se va a agregar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Producto agregado con exito
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor
+      delete:
+        summary: Ruta para eliminar producto de carrito
+        tags:
+          - Carritos
+        
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: ID de carrito a consultar/modificar
+            schema:
+              $type: string
+          - name: pid
+            in: path
+            required: true
+            description: ID de producto que se va a eliminar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Producto quitado con exito
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor
+      put:
+        summary: Ruta para cambiar cantidad de producto del carrito
+        tags:
+          - Carritos
+          
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: ID de carrito a consultar/modificar
+            schema:
+              $type: string
+          - name: pid
+            in: path
+            required: true
+            description: ID de producto que se va a modificar
+            schema:
+              $type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/UpdateQuantity'
+        responses:
+          "200":
+            description: Producto modificado con exito
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor    
+  /api/carts/{cid}/purchase:
+      get:
+        summary: Ruta para comprar
+        tags:
+          - Carritos
+                  
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: id de carrito a consultar/modificar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Confimación de compra realizada
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Hubo un error interno del servidor
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id unico generado por BD
+        products:
+          type: [array]
+          description: productos dentro del carrito
+      example:
+        _id: ObjectId(Codigo del carrito)
+        products: [{"_id":"ObjectID del producto", "Quantity":"Cantidad del producto en el carrito"}]
+  requestBodies:
+    UpdateCart:
+      type: object
+      properties:
+        _id: 
+          type: ObjectID
+        Quantity: 
+          type: number
+    UpdateQuantity:
+      type: object
+      properties:
+        _id: 
+          type: ObjectID
+        Quantity: 
+          type: number
+        
