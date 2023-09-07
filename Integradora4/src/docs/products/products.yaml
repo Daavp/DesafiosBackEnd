@@ -1,0 +1,171 @@
+paths:
+  /api/products/:
+    get:
+      summary: Ruta para obtener productos
+      tags:
+        - Productos
+      responses:
+        "200":
+          description: Los productos se obtuvieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Hubo un error interno del servidor
+    post:
+      summary: Ruta para añadir productos
+      tags:
+        - Productos
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+             schema:
+               $ref: '#components/requestBodies/AddProduct'
+      responses:
+        "200":
+          description: Producto agregado exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Hubo un error interno del servidor
+  /api/products/{pid}:
+    get:
+      summary: Ruta para obtener productos por ID
+      tags:
+        - Productos
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id de producto a consultar/modificar
+        schema:
+           $type: string
+      responses:
+        "200":
+          description: Los producto obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Hubo un error interno del servidor
+    put:
+      summary: Ruta para actualizar producto
+      tags:
+        - Productos
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id de producto a consultar/modificar
+        schema:
+           $type: string            
+      requestBody:
+        required: true
+        content:
+          application/json:
+             schema:
+               $ref: '#components/requestBodies/AddProduct'
+      responses:
+        "200":
+          description: Los producto modificado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Hubo un error interno del servidor
+    delete:
+      summary: Ruta para obtener eliminar producto
+      tags:
+        - Productos
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id de producto a eliminar
+        schema:
+           $type: string
+      responses:
+        "200":
+          description: Los producto eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: Hubo un error interno del servidor
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id unico generado por BD
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: string
+          description: Código del producto
+        price:
+          type: number
+          description: Precio del producto
+        status:
+          type: boolean
+          description: Status del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnails:
+          type: string
+          description: Imagenes del producto
+        owner:
+          type: ObjectId
+          description: id unico generado por BD del dueño del producto
+      example:
+        _id: ObjectId(Codigo del carrito)
+        title: String de Nombre del producto
+        description: String Descripción del producto
+        code: String Código del producto
+        price: Precio del producto
+        status: Status del producto (Booleano)
+        category: Categoría del producto
+        thumbnails: Imagenes del producto
+        owner: ObjectId(id unico generado por BD del dueño del producto)
+  requestBodies:
+    AddProduct:
+      type: object
+      properties:
+        title: 
+          type: string
+        description: 
+          type: string
+        code: 
+          type: string
+        price: 
+          type: number
+        category:
+          type: string
+        thumbnails:
+          type: string
+        

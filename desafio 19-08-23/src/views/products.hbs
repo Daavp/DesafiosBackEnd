@@ -1,0 +1,36 @@
+<h1>Pagina de productos</h1>
+{{#if userData}}
+<h2 id="userLog">¡Bienvenido! {{userData.first_name}} {{userData.last_name}}</h2>
+<div id="cartId" hidden>{{userData.cart}}</div>
+{{/if}}
+
+<hr>
+{{#if totalDocs}}
+    <div class="container">
+        Listado de productos
+        <ul>
+        {{#each payload}}
+            <li>{{this.title}} - Precio: ${{this.price}}</li>
+            <button onclick="location.href='/products/{{this._id}}'" type="button">Ver producto</button>
+            <button onclick="addToCart(`{{this._id}}`)">Agregar al carrito</button>
+            <br></br>
+        {{/each}}
+        </ul>
+    </div>
+    <div>
+        {{#if hasPrevPage}}
+            <a href={{prevLink}}>Anterior</a>
+        {{/if}}
+
+        {{page}}
+
+        {{#if hasNextPage}}
+            <a href={{nextLink}}>Siguiente</a>
+        {{/if}}
+    </div>
+{{else}}
+    <p>No hay productos</p>
+
+{{/if}}
+
+<script src="/js/products.js"></script>
