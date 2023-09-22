@@ -1,0 +1,19 @@
+<h1>Pagina de administrador</h1>
+<h2>Datos del usuario</h2>
+<ul>
+    <li>Nombre usuario: {{first_name}} {{last_name}}</li>
+    <li>Correo usuario: {{email}}</li>
+    <li>Rol del usuario: {{role}}</li>
+    
+</ul>
+<div id="userId" hidden>{{_id}}</div>
+<br>
+<div id="newRole"></div>
+<br><br>
+<div id="deleteMessage"></div>  
+<br><br>
+<button onclick="roleChange(`{{_id}}`)" type="button">Modificar rol del usuario</button>
+<br><br>
+<button onclick="deleteUser(`{{_id}}`)" type="button">Eliminar usuario</button>
+
+<script src="/js/adminView.js"></script>
