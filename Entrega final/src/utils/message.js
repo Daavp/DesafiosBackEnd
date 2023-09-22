@@ -73,4 +73,16 @@ export const deleteUserEmail = async(userEmail) => {
 
 
     })
-}
+};
+export const deleteUserEmailPremium = async(userEmail, htmlMessage) => {
+    //Enviar correo
+    await transporter.sendMail({
+        //Estructura/formato correo
+        from:"Ecommerce",
+        to:userEmail,
+        subject:"Tu cuenta ha sido eliminada por inactividad prolongada",
+        html: htmlMessage
+
+
+    })
+};

@@ -13,7 +13,7 @@ router.get("/chat", UserAuthviews,checkRoles(["user"]),ViewsController.viewsChat
 //render productos con botones// Tiene datos de login de usuario para inicio
 router.get("/products",ViewsController.viewsProducts);
 
-router.get('/carts/:cid', UserAuthviews,checkRoles(["user"]) , ViewsController.viewsCartById);
+router.get('/carts/:cid', UserAuthviews,checkRoles(["user","premium"]) , ViewsController.viewsCartById);
 
 router.get("/products/:pid", ViewsController.viewsProductById);
 //login
@@ -34,5 +34,6 @@ router.get("/loggerTest", ViewsController.loggerError);
 router.get("/forgot-password", ViewsController.forgotPassword);
 //ResetPassword
 router.get("/reset-password", ViewsController.resetPassword);
+//Elimina pero se cae la pagina
 router.get("/adminView/:userid", UserAuthviews,checkRoles(["admin"]),ViewsController.viewAdmin);
 export {router as viewsRouter};

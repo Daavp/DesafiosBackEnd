@@ -1,5 +1,8 @@
 import { UsersService } from "../services/users.service.js";
 import { deleteUserEmail } from "../utils/message.js";
+import { deleteUserEmailPremium } from "../utils/message.js";
+import { ProductsService } from "../services/products.service.js";
+
 export class userController{
     static modifyRole = async(req,res)=>{
         try {
@@ -77,7 +80,7 @@ export class userController{
             deletemargin.setHours(-48);//Tiempo de espera para que se eliminen los datos 2 días
             let arrayUsuarios = result.filter(result => result.last_connection == null || Date.parse(result.last_connection) < deletemargin.getTime()|| result.last_connection == "null");
             let arrayFinal = arrayUsuarios.filter(result => result.role != 'admin');
-            console.log("3 dias antes", deletemargin)
+            console.log("2 dias antes", deletemargin)
             console.log("lastConnectionAllowed ", lastConnectionAllowed);
             console.log("req to delete " ,fechaUsuario);
             console.log("ArrayUsuarios largo" , arrayUsuarios.length);
@@ -94,17 +97,32 @@ export class userController{
                     console.log("Eliminar usuario: ", item._id);
                     //Falta solo poner funcion de eliminar
 
-            }
-/*             const userEmail = "daniel.avilap@hotmail.com";
+            };
+//Correo individual de eliminación de productos y de borrado de cuenta
+            const userEmail = "daniel.avilap@hotmail.com";
             //Validar email existente
                 const user = await UsersService.getUserByEmail(userEmail);
                 if(user._id){
+                    const userProductsPremium = await ProductsService.getAllProducts();
+                    let arrayProductsPremium = userProductsPremium.filter(result => result.owner == user._id);
+                    let arrayProductsPremiumFinal = [];
+                    arrayProductsPremium.map(function(element,index,array){
+                        arrayProductsPremiumFinal.push({htmlMessage:`<div> Producto eliminado: ${element.title}
+                        codigo:${element.code}
+                        Stock:${element.stock}</div>`});
+                        //Agregar aqui eliminación de productos
+                    });
+                    const finaldata = arrayProductsPremiumFinal.map(item => item.htmlMessage);
+                    const finaldataMessage = {...finaldata}
+                    console.log("arrayProductsPremiumFinalhtml",JSON.stringify(finaldataMessage));
+                    console.log("arrayProductsPremiumFinal",arrayProductsPremiumFinal)
             //Enviar correo
                 await deleteUserEmail(userEmail);
+                await deleteUserEmailPremium(userEmail,JSON.stringify(finaldataMessage))
                 res.send("Correo de eliminación enviado");
                 } else{
                     console.log("Correo no encontrado")
-                } */
+                }
 
             res.send(arrayFinal);
             
@@ -114,19 +132,19 @@ export class userController{
     };
     static deleteUser = async(req,res)=>{
         try {
-            const userId=req.params.userId;
-            const result = await UsersService.deleteUser(userId);
-/*             const user = await UsersService.getUserById(userId);
+            const userId= req.params.userid;
+            console.log("req.params",userId)
+/*             const result = await UsersService.deleteUser(userId); */
+            const user = await UsersService.getUserById(userId);
             if(user.role == "admin"){
                 return res.send("No es posible eliminar el usuario, es admin");
             } else {
                 const result = await UsersService.deleteUser(userId);
-                res.send("usuario eliminado");
+                res.json({status:"success", message:"Usuario eliminado"})
                 console.log("Usuario eliminado controller")
-            };  */ 
-            res.send("usuario eliminado");        
+            };         
         } catch (error) {
-            res.send(error.message);
+            res.send({status:"Error", message:"No se pudo eliminar al usuario"});
         }
     };
 }
