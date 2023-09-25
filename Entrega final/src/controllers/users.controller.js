@@ -142,7 +142,6 @@ export class userController{
         try {
             const userId= req.params.userid;
             console.log("req.params",userId)
-/*             const result = await UsersService.deleteUser(userId); */
             const user = await UsersService.getUserById(userId);
             if(user.role == "admin"){
                 return res.send("No es posible eliminar el usuario, es admin");
