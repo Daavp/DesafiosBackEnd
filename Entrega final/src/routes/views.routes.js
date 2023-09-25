@@ -1,6 +1,7 @@
 import { Router, json, response } from "express";
 import { ViewsController } from "../controllers/views.controller.js";
 import { checkRoles, UserAuthviews } from "../middlewares/auth.js";
+import { paymentController } from "../controllers/payment.controller.js";
 
 const router = Router();
 

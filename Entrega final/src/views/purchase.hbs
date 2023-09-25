@@ -30,6 +30,9 @@
 {{/if}}
 
 {{#if products.productsAproved}}
-<button onclick="location.href='/carts/{{myCart}}/purchaseConfirmation'" type="button">Finalizar compra</button>
+<button id="checkout" type="button">Finalizar compra</button>
 {{/if}}
 <button onclick="location.href='/products?page=1'" type="button">Quiero ver otro producto</button>
+
+
+<script src="/js/payments.js"></script>

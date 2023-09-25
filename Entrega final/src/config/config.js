@@ -23,5 +23,9 @@ export const options = {
     gmail:{
         adminEmail:process.env.ADMIN_GMAIL,
         adminPass:process.env.ADMIN_PASS
-    }
+    },
+    stripe:{
+        secretStripeBack:process.env.STRIPE_SECRET,
+        siteDomain:"http://localhost:8080"
+    },
 }

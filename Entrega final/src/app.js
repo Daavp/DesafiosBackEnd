@@ -23,6 +23,7 @@ import { authRouter } from "./routes/auth.routes.js";
 import { productManagerDb } from "./dao/managers/productManager.mongo.js";
 import { chatMongo } from "./dao/managers/chatMongo.js";
 import { mockingproductsRouter } from "./routes/mockingproducts.routes.js";
+import { paymentRouter } from "./routes/payment.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 //const manager = new ProductManager("products.json"); FS
 const manager = new productManagerDb();
@@ -78,6 +79,8 @@ app.use("/mockingproducts",mockingproductsRouter);
 app.use("/api/users",userRouter);
 //Ruta donde se va a ver la documentación de endpoints
 app.use("/documentation",swaggerUI.serve,swaggerUI.setup(swaggerSpecs));
+//Ruta payments stripe
+app.use("/api/payments", paymentRouter);
 
 socketServer.on("connection", async (socket)=>{
     // console.log(`nuevo socket cliente conectado ${socket.id}`);

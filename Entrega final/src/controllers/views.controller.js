@@ -264,6 +264,8 @@ export class ViewsController{
     };
     static async purchaseConfirmationView(req,res){
         try {
+
+
             let myuuid = uuidv4();
             const cartId = req.params.cid;
             const data = await cartsService.getCartById(cartId);
@@ -325,6 +327,9 @@ export class ViewsController{
                logger.http("requser",req.user);
                logger.http("prodAp",productsAproved);
 
+               //Crear ticket y eliminar productos
+
+
                const orderConfirmed = await ticketsService.createTicket(ticketInfo);
                logger.info("OrderConfirmed ",orderConfirmed);
 
@@ -336,8 +341,10 @@ export class ViewsController{
                 const productDB = await cartsService.deleteProductFromCart(cartId,productIdCart.productId);
                 logger.http("FuncDelete", productDB);
 
-
             };
+
+
+
                 //Render
                return res.render("purchaseConfirmation",clientPageInfo)
             };
@@ -398,4 +405,5 @@ static async viewAdmin(req,res){
         res.status(500).send({status:"Error"}); 
     }
 };
+
 }

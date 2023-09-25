@@ -112,22 +112,30 @@ export class userController{
                         Stock:${element.stock}</div>`});
                         //Agregar aqui eliminación de productos
                     });
+                    let arrayProductsDelete = [];
+                    for (let i = 0; i < arrayProductsPremium.length; i++) {
+                        const element = arrayProductsPremium[i];
+                        //Poner el delete product by id
+                       const productDelete = await ProductsService.getProductById(element._id)
+                        arrayProductsDelete.push(productDelete._id)
+                    };
+                    console.log("arrayProductsDelete",arrayProductsDelete)
                     const finaldata = arrayProductsPremiumFinal.map(item => item.htmlMessage);
-                    const finaldataMessage = {...finaldata}
+                    const finaldataMessage = {...finaldata};
                     console.log("arrayProductsPremiumFinalhtml",JSON.stringify(finaldataMessage));
+                    console.log("arrayProductsPremium ",arrayProductsPremium)
                     console.log("arrayProductsPremiumFinal",arrayProductsPremiumFinal)
             //Enviar correo
                 await deleteUserEmail(userEmail);
                 await deleteUserEmailPremium(userEmail,JSON.stringify(finaldataMessage))
-                res.send("Correo de eliminación enviado");
                 } else{
                     console.log("Correo no encontrado")
                 }
 
-            res.send(arrayFinal);
+            res.json(arrayFinal);
             
         } catch (error) {
-            res.send(error.message);
+            res.json(error.message);
         }
     };
     static deleteUser = async(req,res)=>{
